@@ -1,0 +1,18 @@
+table {
+    word-break: break-all;
+}
+.copier {
+    transition-duration: 0.2s;
+}
+.copier:hover {
+    color: cadetblue;
+    cursor: pointer;
+}
+.copier-float {
+    position: absolute;
+    right: 8px;
+    top: 10px;
+}
+pre code.hljs {
+    border-radius: 5px;
+}
