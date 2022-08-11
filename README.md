@@ -7,4 +7,4 @@
 使用的开源项目列表:
 public/static/page/credits.html
 
-*Only Chinese(Simplified) has been supported.*
+*Only Chinese(Simplified) had been supported.*
