@@ -5,8 +5,7 @@ $loader->init("发帖");
 $config = Info::config();
 Loader::add_css("../static/css/menu.css");
 Loader::add_css("../static/css/blog.css");
-Loader::add_js("../static/js/colorpicker.js");
-Loader::add_js("../static/js/editor.js");
+Loader::add_js("../static/js/blog/editor_func.js");
 Loader::add_js($config['codemirror_js_src']);
 Loader::add_css($config['codemirror_css_src']);
 Loader::add_js($config['codemirror_mode_js_src']);
@@ -112,14 +111,6 @@ if ($is_edit && !$blog->have_permission()) {
                             </p>
                         </div>
                     </div>
-                    <script>
-                        let acc = $("#accordion");
-                        acc.accordion({
-                            selector: {
-                                trigger: '#acc-title'
-                            }
-                        });
-                    </script>
                 </div>
 
                 <div class="field">
@@ -180,15 +171,6 @@ if ($is_edit && !$blog->have_permission()) {
                 <input type="color" id="color-picker">
                 <span id="picker-rbg" style="font-size: large"></span>
             </label>
-            <script>
-                let cp = $("#color-picker");
-                cp.val('#000000');
-                let cptxt = $("#picker-rbg");
-                cp.on('input', function () {
-                    cptxt.empty();
-                    cptxt.append(cp.val());
-                });
-            </script>
         </div>
         <div class="actions">
             <span class="ui red button" onclick="picker_div.modal('hide')">取消</span>
@@ -274,64 +256,11 @@ if ($is_edit && !$blog->have_permission()) {
     </div>
     </body>
     <script>
-        let editor = CodeMirror.fromTextArea(document.getElementById("text"),{
-            lineNumbers: true,//显示行号
-            mode: "text/markdown",  // 模式，这里指定html
-            theme: "<?php echo $config['codemirror_theme']; ?>"
-        });
-
-        let picker_div = $("#pick-color");
-        let imgur = $("#imgur");
-        let imgur_div = $("#imgur-div");
-        let add_img = $("#add-img");
-        let add_lnk = $("#add-lnk");
-        let add_code = $("#add-code");
-        let code_pkr = $('#code-picker');
-        code_pkr.dropdown();
-
-        function show_error(error) {
-            $("#error").text(error).show();
-        }
-        function success(data) {
-            window.location.href = "./show.php?id=" + data.substring(7, data.length);
-        }
-        function submit() {
-            $("#submit").addClass("loading");
-            editor.save();
-            $.ajax({
-                url: "./api.php",
-                type: 'POST',
-                data: {
-                    <?php if ($is_edit) echo '"id": '.$id.","; ?>
-                    "type": "<?php echo $is_edit ? "edit" : "create" ?>",
-                    "editors": $("#editors").val(),
-                    "title": $("#title").val(),
-                    "visible": $("#visible").prop("checked") ? "不可见" : "可见",
-                    "text": $('<div>').text($("#text").val()).html(),
-                    "intro": $("#intro").val(),
-                    "tags": $("#tags").val()
-                },
-                async: true,
-                success: function(data) {
-                    if (data[0] !== "s") {
-                        show_error(data);
-                    } else {
-                        success(data);
-                    }
-                    $("#submit").text("发帖").removeClass("loading");
-                },
-                error:  function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert(XMLHttpRequest.responseText);
-                    show_error("未知错误");
-                    $("#submit").text("发帖");
-                }
-            });
-        }
-        $(document).ready(function() {
-            $("#submit").click(function() {
-                submit();
-            });
-        });
+        let is_edit = <?php echo $is_edit ? "true" : "false" ?>;
+        let id = <?php echo $id ?>;
+        let type = <?php echo "'".($is_edit ? "edit" : "create")."'" ?>;
+    </script>
+    <script src="../static/js/blog/post.js">
     </script>
 <?php
 $loader->page_end();

@@ -47,47 +47,9 @@ $loader->init_end();
     <?php $loader->footer(); ?>
     </body>
     <script>
-        function show_error(error) {
-            $("#error").text(error).show();
-        }
-        function success() {
-            redirect_to_from(<?php echo "'".get_url_prefix()."'" ?>);
-        }
-        function login() {
-            let password = $("#password").val();
-            let fd = new FormData();
-            fd.append("password", password);
-            fd.append("email", $("#email").val());
-            fd.append("auto-login", $("#auto-login").prop("checked"));
-            fd.append("type", "login");
-            $("#login").addClass("loading");
-            $.ajax({
-                url: "./api.php",
-                type: 'POST',
-                data: fd,
-                contentType: false,
-                processData: false,
-                async: true,
-                success: function(data) {
-                    if (data !== "success") {
-                        show_error(data);
-                    } else {
-                        success();
-                    }
-                    $("#login").text("登录").removeClass("loading");
-                },
-                error:  function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert(XMLHttpRequest.responseText);
-                    show_error("未知错误");
-                    $("#login").text("登录");
-                }
-            });
-        }
-        $(document).ready(function() {
-            $("#login").click(function() {
-                login();
-            });
-        });
+        let from_url = <?php echo "'".get_url_prefix()."'" ?>;
+    </script>
+    <script src="../static/js/user/login.js">
     </script>
 <?php
 $loader->page_end();
