@@ -14,6 +14,10 @@ if (!User::verified()) {
     redirect("/user/verify.php?from=".get_full_cur_url_encoded());
     die;
 }
+if (User::local_be_banned($loader->info->conn)) {
+    notice_be_banned(User::be_banned_to());
+    die;
+}
 $img_list = Imgur::get_list_by_uid($loader->info->conn, $_SESSION['uid']);
 $total_memory = 0;
 foreach ($img_list as $img) $total_memory += $img->size;

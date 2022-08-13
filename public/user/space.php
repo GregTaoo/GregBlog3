@@ -36,6 +36,7 @@ if (!$user->exist) {
                 </h2>
             </div>
             <div class="ui segment">
+                <?php if ($user->be_banned()) echo '<strong style="color:red">该用户封禁中</strong><br>' ?>
                 个性签名：<?php echo $user->intro; ?>
             </div>
         </div>

@@ -112,7 +112,7 @@ $config = Info::config();
             type: 'POST',
             async: true,
             data: {
-                'type': 'get-boardcasts-list'
+                'type': 'get-broadcasts-list'
             },
             success: function(data) {
                 console.log(data);

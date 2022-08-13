@@ -13,17 +13,29 @@ switch ($manage) {
         $user->title = $title;
         die($user->update_simply() ? "成功授予了用户<a href=\"../user/space.php?uid=".$uid."\">".$user->nickname."</a> (UID: ".$uid.") 头衔：".$title : "!授予失败");
     }
+    case "ban-user": {
+        if (empty($_POST['uid'])) die("!请填写用户uid");
+        $uid = $_POST['uid'];
+        if (!is_numeric($uid)) die("!请填写用户uid");
+        if (empty($_POST['time'])) die("!请填写时长");
+        $time = $_POST['time'];
+        if (!is_numeric($time)) die("!请填写时长");
+        $time += time();
+        $user = User::get_user($loader->info->conn, $uid, true);
+        $user->ban = $time;
+        die($user->update_simply() ? "成功封禁用户<a href=\"../user/space.php?uid=".$uid."\">".$user->nickname."</a> (UID: ".$uid.")到".date("Y年m月d日H时i分s秒", $time) : "!失败");
+    }
     case "get-imgur": {
         $page = empty($_POST['page']) ? 0 : $_POST['page'];
         $uid = empty($_POST['uid']) ? 0 : $_POST['uid'];
         if (!is_numeric($uid)) die("!请输入正确的uid");
         die(json_encode(Imgur::get_json_by_page($loader->info->conn, $page, $uid)));
     }
-    case "get-boardcasts-list": {
+    case "get-broadcasts-list": {
         $page = empty($_POST['page']) ? 0 : $_POST['page'];
-        die(json_encode(Boardcast::get_boardcasts_json($loader->info->conn, $page, 20)));
+        die(json_encode(Broadcast::get_broadcasts_json($loader->info->conn, $page, 20)));
     }
-    case "update-boardcast": {
+    case "update-broadcast": {
         $id = empty($_POST['id']) ? 0 : $_POST['id'];
         $edit = $_POST['edit'] == "true";
         if ($edit && $id == 0) die("未指定id");
@@ -32,20 +44,20 @@ switch ($manage) {
         $type = $_POST['type'];
         $stick = $_POST['stick'] == "true";
         if ($edit) {
-            $bc = Boardcast::from_id($loader->info->conn, $id);
+            $bc = Broadcast::from_id($loader->info->conn, $id);
             $bc->title = $title;
             $bc->link = $link;
             $bc->type = $type;
             $bc->stick = $stick;
             die($bc->update($loader->info->conn) ? json_encode($bc) : "failed");
         } else {
-            die(Boardcast::add_boardcast($loader->info->conn, $link, $type, $stick, $title, $bc) ? json_encode($bc) : "failed");
+            die(Broadcast::add_broadcast($loader->info->conn, $link, $type, $stick, $title, $bc) ? json_encode($bc) : "failed");
         }
     }
-    case "delete-boardcast": {
+    case "delete-broadcast": {
         $id = empty($_POST['id']) ? 0 : $_POST['id'];
         if ($id == 0) die("id不存在");
-        die(Boardcast::delete_boardcast($loader->info->conn, $id) ? "success" : "删除失败");
+        die(Broadcast::delete_broadcast($loader->info->conn, $id) ? "success" : "删除失败");
     }
     case "get-config-array": {
         die(file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/../config/Config.json'));

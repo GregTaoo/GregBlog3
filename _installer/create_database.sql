@@ -18,7 +18,7 @@ create table blogs
     likes            int        default 0 null
 );
 
-create table boardcasts
+create table broadcasts
 (
     type     tinytext             null,
     link     text                 null,

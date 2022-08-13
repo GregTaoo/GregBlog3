@@ -97,3 +97,7 @@ function get_normal_msg($msg): string
     </div>
     ';
 }
+function notice_be_banned($timestamp)
+{
+    redirect("/redirect.php?jump=0&msg=你已经被封禁到".date("Y年m月d日H时i分s秒", $timestamp));
+}

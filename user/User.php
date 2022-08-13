@@ -64,8 +64,8 @@ class User {
 
     public function update_simply(): bool
     {
-        $stmt = $this->conn->prepare("UPDATE users SET nickname = ?, password = ?, intro = ?, title = ?, allow_be_srch = ? WHERE uid = ?");
-        $stmt->bind_param("ssssii", $this->nickname, $this->password, $this->intro, $this->title, $this->allow_be_srch, $this->uid);
+        $stmt = $this->conn->prepare("UPDATE users SET nickname = ?, password = ?, intro = ?, title = ?, allow_be_srch = ?, ban = ? WHERE uid = ?");
+        $stmt->bind_param("ssssiii", $this->nickname, $this->password, $this->intro, $this->title, $this->allow_be_srch, $this->ban, $this->uid);
         return $stmt->execute();
     }
 
@@ -92,9 +92,6 @@ class User {
     public static function login($conn, $email, $password, &$error): bool
     {
         $user = User::get_user_email($conn, $email, true);
-        if (time() < $user->ban) {
-            $error = "你已经被封禁到".date("Y-m-d H:i:s", $user->ban);
-        }
         if ($user->exist && (password_verify($password, $user->password) || md5($password) == $user->password)) {
             $user->set_session();
             return true;
@@ -150,6 +147,7 @@ class User {
         $_SESSION['email'] = $this->email;
         $_SESSION['loggedin'] = true;
         $_SESSION['verified'] = $this->verified;
+        $_SESSION['ban'] = $this->ban;
     }
 
     public function send_verify_code(): bool
@@ -244,5 +242,27 @@ class User {
     {
         if (empty($str)) return '';
         return '<div class="ui mini blue horizontal label">'.$str.'</div>';
+    }
+
+    public static function update_ban($conn)
+    {
+        $user = self::get_user($conn, User::uid(), true);
+        $user->set_session();
+    }
+
+    public static function local_be_banned($conn): bool
+    {
+        self::update_ban($conn);
+        return !empty($_SESSION['ban']) && $_SESSION['ban'] >= time();
+    }
+
+    public function be_banned(): bool
+    {
+        return $this->ban != 0 && $this->ban >= time();
+    }
+
+    public static function be_banned_to(): int
+    {
+        return empty($_SESSION['ban']) ? 0 : $_SESSION['ban'];
     }
 }

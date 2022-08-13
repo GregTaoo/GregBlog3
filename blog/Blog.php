@@ -9,7 +9,7 @@ class Blog {
     public array $editors_arr;
 
     public mysqli $conn;
-    public static string $sql = "SELECT owner, create_time, latest_edit_time, latest_editor, title, parti, visible, md5, replies_sum, page_view, tags, intro, likes FROM blogs WHERE id = ?";
+    public static string $sql = "SELECT owner, create_time, latest_edit_time, latest_editor, title, parti, visible, md5, replies_sum, page_view, tags, intro, likes, editors FROM blogs WHERE id = ?";
     public static string $sql_full = "SELECT * FROM blogs WHERE id = ?";
 
     public function __construct($conn, $id, $get_text)
@@ -105,10 +105,10 @@ class Blog {
             $this->intro = $arr['intro'];
             $this->likes = $arr['likes'];
             $this->page_view = $arr['page_view'];
+            $this->editors = $arr['editors'];
+            $this->execute_editors();
             if ($this->get_text) {
-                $this->editors = $arr['editors'];
                 $this->read_blog_file();
-                $this->execute_editors();
             }
         }
     }

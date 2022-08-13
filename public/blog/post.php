@@ -12,6 +12,10 @@ Loader::add_css($config['codemirror_css_src']);
 Loader::add_js($config['codemirror_mode_js_src']);
 Loader::add_css($config['codemirror_theme_css_src']);
 $loader->init_end();
+if (User::local_be_banned($loader->info->conn)) {
+    notice_be_banned(User::be_banned_to());
+    die;
+}
 $is_edit = !empty($_GET['is_edit']) && $_GET['is_edit'] == "1";
 $id = $is_edit ? (empty($_GET['id']) ? 0 : $_GET['id']) : 0;
 $blog = new Blog($loader->info->conn, $id, true);
@@ -73,7 +77,7 @@ if ($is_edit && !$blog->have_permission()) {
             <?php if (!$blog->is_editor) { ?>
             <div class="field">
                 <label>协同编辑人员（逗号隔开UID）</label>
-                <input type="text" id="Editors" placeholder="Editors" <?php if ($is_edit) echo 'value="'.$blog->editors.'"' ?>>
+                <input type="text" id="editors" placeholder="Editors" <?php if ($is_edit) echo 'value="'.$blog->editors.'"' ?>>
             </div>
             <?php } ?>
             <div class="ui segment">

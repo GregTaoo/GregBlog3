@@ -1,8 +1,8 @@
 function cur_url_decode(url) {
-    return url.replace("$", "?").replaceAll("@", "&").replaceAll(",", "=");
+    return url.replace("$", "?").replace(/@/g, "&").replace(/,/g, "=");
 }
 function cur_url_encode(url) {
-    return url.replace("?", "$").replaceAll("&", "@").replaceAll("=", ",");
+    return url.replace("?", "$").replace(/&/g, "@").replace(/=/g, ",");
 }
 function redirect_to_from(prefix) {
     let url = window.location.search;

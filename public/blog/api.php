@@ -8,6 +8,8 @@ if (!empty($_POST['type'])) {
         case "create": {
             if (!User::logged()) die("你尚未登录");
             if (!User::verified()) die("请先验证邮箱");
+            $info = new Info();
+            if (User::local_be_banned($info->conn)) die("你已被封禁");
             $editors = empty($_POST['editors']) ? "" : htmlspecialchars($_POST['editors']);
             $title = htmlspecialchars($_POST['title']);
             if (!is_text($title)) die("标题不得为空或过长（0-65535）");
@@ -33,6 +35,8 @@ if (!empty($_POST['type'])) {
         case "edit": {
             if (!User::logged()) die("你尚未登录");
             if (!User::verified()) die("请先验证邮箱");
+            $info = new Info();
+            if (User::local_be_banned($info->conn)) die("你已被封禁");
             if (empty($_POST['id'])) die("找不到博客");
             $id = $_POST['id'];
             $info = new Info();
@@ -88,6 +92,8 @@ if (!empty($_POST['type'])) {
         case "post-reply": {
             if (!User::logged()) die("你尚未登录");
             if (!User::verified()) die("请先验证邮箱");
+            $info = new Info();
+            if (User::local_be_banned($info->conn)) die("你已被封禁");
             $sub = !empty($_POST['sub']) && $_POST['sub'] == "true";
             $in_blog = $_POST['in_blog'];
             if (!check_length($_POST['text'], 0, 2333)) die("长度限制（0-2333）");
@@ -137,9 +143,9 @@ if (!empty($_POST['type'])) {
             $info = new Info();
             die(json_encode(Blog::select_by_rank_as_json($info->conn, $amount)));
         }
-        case "get-boardcasts-list": {
+        case "get-broadcasts-list": {
             $info = new Info();
-            die(json_encode(Boardcast::get_boardcasts_json($info->conn, 0, 5)));
+            die(json_encode(Broadcast::get_broadcasts_json($info->conn, 0, 5)));
         }
         default: {
             die("未知的操作");

@@ -32,7 +32,7 @@ $page = empty($_GET['page']) ? "user" : $_GET['page'];
         <a class="item <?php if ($page == "imgur") echo 'active' ?>" href="?page=imgur">
             图片
         </a>
-        <a class="item <?php if ($page == "boardcast") echo 'active' ?>" href="?page=boardcast">
+        <a class="item <?php if ($page == "broadcast") echo 'active' ?>" href="?page=broadcast">
             公告
         </a>
         <a class="item <?php if ($page == "site") echo 'active' ?>" href="?page=site">
@@ -59,6 +59,19 @@ $page = empty($_GET['page']) ? "user" : $_GET['page'];
             </div>
         </div>
     </div>
+    <div class="ui form">
+        <div class="inline fields">
+            <div class="nine wide field">
+                <input type="text" id="ban-uid" placeholder="封禁：UID">
+            </div>
+            <div class="nine wide field">
+                <input type="text" id="ban-time" placeholder="时长：秒">
+            </div>
+            <div class="two wide field">
+                <div class="ui fluid red button" onclick="ban_user()">封禁</div>
+            </div>
+        </div>
+    </div>
     <script>
         function give_title() {
             $.ajax({
@@ -68,6 +81,25 @@ $page = empty($_GET['page']) ? "user" : $_GET['page'];
                     "manage": "give-title",
                     "uid": $("#title-uid").val(),
                     "title": $("#title-title").val()
+                },
+                async: true,
+                success: function (data) {
+                    show(data[0] === '!', data);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.responseText);
+                    show(true, "未知错误");
+                }
+            });
+        }
+        function ban_user() {
+            $.ajax({
+                url: "./api.php",
+                type: 'POST',
+                data: {
+                    "manage": "ban-user",
+                    "uid": $("#ban-uid").val(),
+                    "time": $("#ban-time").val()
                 },
                 async: true,
                 success: function (data) {
@@ -180,7 +212,7 @@ $page = empty($_GET['page']) ? "user" : $_GET['page'];
         </script>
         <?php
     }
-    else if ($page == "boardcast") {
+    else if ($page == "broadcast") {
         ?>
         <div class="ui segment">
             <div class="ui button" onclick="new_bc()">创建公告</div>
@@ -215,7 +247,7 @@ $page = empty($_GET['page']) ? "user" : $_GET['page'];
                     type: 'POST',
                     async: true,
                     data: {
-                        'manage': 'delete-boardcast',
+                        'manage': 'delete-broadcast',
                         'id': id
                     },
                     success: function(data) {
@@ -238,7 +270,7 @@ $page = empty($_GET['page']) ? "user" : $_GET['page'];
                     type: 'POST',
                     async: true,
                     data: {
-                        'manage': 'update-boardcast',
+                        'manage': 'update-broadcast',
                         'id': id,
                         'edit': edit,
                         'title': $("#bc" + id + "-title").val(),
@@ -272,7 +304,7 @@ $page = empty($_GET['page']) ? "user" : $_GET['page'];
                     type: 'POST',
                     async: true,
                     data: {
-                        'manage': 'get-boardcasts-list',
+                        'manage': 'get-broadcasts-list',
                         'page': page
                     },
                     success: function(data) {

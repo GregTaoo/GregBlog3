@@ -66,7 +66,7 @@ class Message {
         }
     }
 
-    public static function add_system_boardcast($conn, $text)
+    public static function add_system_broadcast($conn, $text)
     {
         $config = Info::config();
         $msg = self::of($conn, $config['test_acc_uid'], 0, $text, "sys-bc");
