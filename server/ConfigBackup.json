@@ -37,6 +37,7 @@
   "highlight_js_src": "https://unpkg.com/gregblog-cdn/js/highlight/highlight.min.js",
   "highlight_css_src": "https://unpkg.com/gregblog-cdn/js/highlight/styles/atom-one-dark.min.css",
   "clipboard_js_src": "https://unpkg.com/gregblog-cdn/js/clipboard/clipboard.min.js",
+  "homepage_postcards": "https://unpkg.com/gregblog-cdn/img/default_postcard.jpg|https://unpkg.com/gregblog-cdn/img/default_postcard.jpg",
   "emotion_shaxiao": "shaxiao.jpg",
   "emotion_oooo": "woooo.jpg",
   "emotion_wuyu": "wuyu.jpg",

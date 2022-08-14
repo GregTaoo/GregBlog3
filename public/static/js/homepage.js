@@ -8,7 +8,7 @@ function recommend() {
         type: 'POST',
         data: {
             "type": "randomly-select-blogs",
-            "amount": 4
+            "amount": 2
         },
         async: true,
         success: function(data) {

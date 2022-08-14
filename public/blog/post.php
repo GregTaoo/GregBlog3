@@ -11,10 +11,6 @@ Loader::add_css($config['codemirror_css_src']);
 Loader::add_js($config['codemirror_mode_js_src']);
 Loader::add_css($config['codemirror_theme_css_src']);
 $loader->init_end();
-if (User::local_be_banned($loader->info->conn)) {
-    notice_be_banned(User::be_banned_to());
-    die;
-}
 $is_edit = !empty($_GET['is_edit']) && $_GET['is_edit'] == "1";
 $id = $is_edit ? (empty($_GET['id']) ? 0 : $_GET['id']) : 0;
 $blog = new Blog($loader->info->conn, $id, true);
@@ -45,6 +41,10 @@ if ($is_edit && !$blog->have_permission()) {
             die;
         } else if (!User::verified()) {
             redirect("../user/verify.php");
+            die;
+        }
+        if (User::local_be_banned($loader->info->conn)) {
+            notice_be_banned(User::be_banned_to());
             die;
         }
         ?>
@@ -178,7 +178,7 @@ if ($is_edit && !$blog->have_permission()) {
             <span class="ui green button" onclick="editor_color(cp.val(), true); picker_div.modal('hide')">插入</span>
         </div>
     </div>
-    <div class="ui long modal loading" id="add-img">
+    <div class="ui long modal loading" id="add-img" style="display: none">
         <i class="close icon"></i>
         <div class="header">插入图片
             <div class="ui orange button" id="imgur-btn" onclick="imgur_div.addClass('loading'); imgur_div.css('display', 'block'); imgur.attr('src', '/imgur/upload.php?iframe=1'); $('#imgur-btn').hide()">
@@ -219,7 +219,7 @@ if ($is_edit && !$blog->have_permission()) {
         <div class="content">
             选择语言（可插入后将语言名加在第一个```后方）
             <select class="ui search dropdown" id="code-picker">
-                <option value="">无</option>
+                <option value="">无/自定义</option>
                 <option value="cpp">C++</option>
                 <option value="c">C</option>
                 <option value="java">Java</option>
@@ -259,6 +259,7 @@ if ($is_edit && !$blog->have_permission()) {
         let is_edit = <?php echo $is_edit ? "true" : "false" ?>;
         let id = <?php echo $id ?>;
         let type = <?php echo "'".($is_edit ? "edit" : "create")."'" ?>;
+        let theme = <?php echo "'".$config['codemirror_theme']."'" ?>;
     </script>
     <script src="../static/js/blog/post.js">
     </script>

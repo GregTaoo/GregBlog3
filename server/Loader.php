@@ -65,7 +65,7 @@ LABEL;
         <div class="ui fixed borderless menu top-menu">
             <div class="ui container">
                 <a class="item '.$this->is_active("index").'" href="/">
-                    <img src="'.get_url_prefix().$config['domain'].$config['icon_path'].'">
+                    <img src="'.get_url_prefix().$config['domain'].$config['icon_path'].'" alt="GregBlog">
                 </a>
                 <a class="item '.$this->is_active("search").'" href="/search">
                     <i class="search icon"></i>
@@ -95,10 +95,14 @@ LABEL;
     public function footer()
     {
         echo '
-        <div class="ui vertical footer segment" style="color: #9b9b9b">
-            <div class="ui center aligned container">
-                GregBlog, Managed by <a href="/user/space.php?uid=1">GregTao</a><br>
-                <a href="/static/page/credits.html">Credits</a>
+        <div class="ui vertical footer">
+            <div class="ui center aligned grid" style="margin-top: 30px; padding: 20px; background-color: #f8f8f8;">
+                <div class="eight wide column">
+                    <a href="https://github.com/gregtaoo/gregblog3">GregBlog</a>, Managed by <a href="https://github.com/gregtaoo/">GregTao</a>
+                </div>
+                <div class="eight wide column">
+                    <a href="/static/page/credits.html">Credits</a>
+                </div>
             </div>
         </div>
         ';
@@ -117,5 +121,10 @@ LABEL;
     public static function add_js_extra($url, $extra)
     {
         echo '<script src="'.$url.'" '.$extra.'></script>';
+    }
+
+    public static function get_postcards($config): array
+    {
+        return explode("|", $config['homepage_postcards']);
     }
 }

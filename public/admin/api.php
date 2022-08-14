@@ -60,7 +60,7 @@ switch ($manage) {
         die(Broadcast::delete_broadcast($loader->info->conn, $id) ? "success" : "删除失败");
     }
     case "get-config-array": {
-        die(file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/../config/Config.json'));
+        die(json_encode(Info::config()));
     }
     case "update-config-array": {
         if (empty($_POST['json'])) die("字符串为空");

@@ -16,7 +16,7 @@ acc.accordion({
 let editor = CodeMirror.fromTextArea(document.getElementById("text"),{
     lineNumbers: true,//显示行号
     mode: "text/markdown",  // 模式，这里指定html
-    theme: "<?php echo $config['codemirror_theme']; ?>"
+    theme: theme
 });
 
 let picker_div = $("#pick-color");

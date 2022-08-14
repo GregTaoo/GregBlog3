@@ -5,6 +5,7 @@ $loader->init("主页");
 Loader::add_css("../static/css/menu.css");
 $loader->init_end();
 $config = Info::config();
+$postcards = Loader::get_postcards($config);
 ?>
 <body>
 <?php $loader->top_menu(); ?>
@@ -54,7 +55,7 @@ $config = Info::config();
             <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
         </tr>
     </table>
-    <div class="ui segment" id="bcs-div" hidden>
+    <div class="ui container" id="bcs-div" hidden>
         <div class="ui header">
             公告
         </div>
@@ -63,16 +64,36 @@ $config = Info::config();
             </tbody>
         </table>
     </div>
-    <div class="ui segment" style="margin-top: 20px">
-        <div>
-            <span class="ui header">
-                随机推荐
-            </span>
-            <a class="ui orange button" href="./blog/rank.php"><i class="chess queen icon"></i>排行榜</a>
-            <div class="ui privacy button" onclick="recommend()" id="refresh-recmd"><i class="sync alternate icon"></i>刷新推荐</div>
+    <div class="ui grid" style="margin-top: 20px; ">
+        <div class="eight wide column">
+            <div class="ui link two doubling cards" id="recommend">
+            </div>
+            <div style="margin-top: 20px">
+                <span class="ui header">
+                    <a class="ui orange button" href="./blog/rank.php"><i class="chess queen icon"></i>排行榜</a>
+                    <span class="ui privacy button" onclick="recommend()" id="refresh-recmd"><i class="sync alternate icon"></i>刷新推荐</span>
+                </span>
+            </div>
         </div>
-        <div class="ui divider"></div>
-        <div class="ui link four doubling cards" id="recommend">
+        <div class="two wide column">
+        </div>
+        <div class="six wide column">
+            <div class="ui shape" id="postcards">
+                <div class="sides">
+                    <div class="active side">
+                        <img src="<?php echo $postcards[0] ?>" width="100%" style="border-radius: 10px" alt="1">
+                    </div>
+                    <?php
+                        for ($i = 1; $i < count($postcards); ++$i) {
+                            ?>
+                            <div class="side">
+                                <img src="<?php echo $postcards[$i] ?>" width="100%" style="border-radius: 10px" alt="1">
+                            </div>
+                            <?php
+                        }
+                    ?>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -80,6 +101,19 @@ $config = Info::config();
 </body>
 <script>
     let avatar = <?php echo "'".$config['def_user_avatar']."'" ?>;
+    let postcards = $("#postcards");
+    postcards.shape();
+    function flips() {
+        postcards.shape("flip right");
+    }
+    let timer = setInterval(flips, 10000);
+    document.addEventListener("visibilitychange", function () {
+        if (document.visibilityState === "hidden") {
+            clearInterval(timer);
+        } else {
+            timer = setInterval(flips, 10000);
+        }
+    }, false);
 </script>
 <script src="static/js/homepage.js">
 </script>
