@@ -9,7 +9,7 @@ switch ($manage) {
         $uid = $_POST['uid'];
         if (!is_numeric($uid)) die("!请填写用户uid");
         $title = empty($_POST['title']) ? "" : $_POST['title'];
-        $user = User::get_user($loader->info->conn, $uid, true);
+        $user = User::get_user_by_uid($loader->info->conn, $uid, true);
         $user->title = $title;
         die($user->update_simply() ? "成功授予了用户<a href=\"../user/space.php?uid=".$uid."\">".$user->nickname."</a> (UID: ".$uid.") 头衔：".$title : "!授予失败");
     }
@@ -21,9 +21,10 @@ switch ($manage) {
         $time = $_POST['time'];
         if (!is_numeric($time)) die("!请填写时长");
         $time += time();
-        $user = User::get_user($loader->info->conn, $uid, true);
+        $user = User::get_user_by_uid($loader->info->conn, $uid, true);
         $user->ban = $time;
-        die($user->update_simply() ? "成功封禁用户<a href=\"../user/space.php?uid=".$uid."\">".$user->nickname."</a> (UID: ".$uid.")到".date("Y年m月d日H时i分s秒", $time) : "!失败");
+        die($user->update_simply() && Message::add_be_banned_message($loader->info->conn, $uid, $time) ?
+            "成功封禁用户<a href=\"../user/space.php?uid=".$uid."\">".$user->nickname."</a> (UID: ".$uid.")到".date("Y年m月d日H时i分s秒", $time) : "!失败");
     }
     case "get-imgur": {
         $page = empty($_POST['page']) ? 0 : $_POST['page'];

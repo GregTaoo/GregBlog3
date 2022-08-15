@@ -107,11 +107,12 @@ if (!empty($_POST['type'])) {
             $reply->sub = $sub;
             $reply->text = $text;
             $reply->owner = $owner;
+            $statu = $reply->insert();
             $arr = array(
-                'statu' => ($reply->insert() ? "success" : "失败"),
-                'reply' => $reply->to_json_array()
+                'statu' => ($statu ? "success" : "失败"),
+                'reply' => $statu ? $reply->to_json_array() : array()
             );
-            Message::add_reply_message($info->conn, $owner, $sub, $in_blog, $text, $reply->floor);
+            Message::add_reply_message($info->conn, $owner, $sub, $in_blog, $text, $reply->floor, $reply->reply_id);
             die(json_encode($arr));
         }
         case "get-reply": {

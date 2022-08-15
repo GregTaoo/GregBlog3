@@ -19,7 +19,7 @@ function query(page) {
             let obj = JSON.parse(data);
             pages = parseInt(parseInt(obj['cnt']) / 20);
             hdrdiv.empty();
-            hdrdiv.append("共 " + obj['cnt'] + " / <?php echo $config['collection_size'] ?> 条收藏");
+            hdrdiv.append("共 " + obj['cnt'] + " / " + max_size + " 条收藏");
             if (obj['cnt'] === 0) {
                 cttdiv.hide();
                 return;

@@ -9,7 +9,7 @@ if (!User::logged()) {
     die;
 }
 $uid = empty($_SESSION['uid']) ? 0 : $_SESSION['uid'];
-$user = User::get_user($loader->info->conn, $uid, true);
+$user = User::get_user_by_uid($loader->info->conn, $uid, true);
 if (!$user->exist) {
     echo_error_body($loader, "该用户不存在");
     die;

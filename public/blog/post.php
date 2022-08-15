@@ -126,7 +126,7 @@ if ($is_edit && !$blog->have_permission()) {
                         <div class="ui green basic button" onclick="editor_link(false)"><i class="linkify icon"></i></div>
                         <div class="ui green basic button" onclick="editor_img()"><i class="file image icon"></i></div>
                         <div class="ui green basic button" onclick="editor_quote()"><i class="quote left icon"></i></div>
-                        <div class="ui green basic button" onclick="editor_tag('center')"><i class="align center icon"></i></div>
+                        <div class="ui green basic button" onclick="editor_tag('center', true)"><i class="align center icon"></i></div>
                         <div class="ui green basic button" onclick="add_code.modal('show')"><i class="code icon"></i></div>
                         <div class="ui green basic button" onclick="picker_div.modal('show')"><i class="paint brush icon"></i></div>
                     </div>

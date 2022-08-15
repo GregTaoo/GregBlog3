@@ -11,7 +11,7 @@ if (User::logged()) {
     $user = new User($loader->info->conn);
     $user->uid = $_SESSION['uid'];
     $user->personal = true;
-    $user->query(false);
+    $user->query("uid");
     if ($user->exist) {
         if ($is_check) {
             if (time() - $user->verify_time <= 300) {

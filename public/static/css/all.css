@@ -16,3 +16,19 @@ table {
 pre code.hljs {
     border-radius: 5px;
 }
+html, body {
+    height: auto;
+}
+#postcards {
+    width: 100%;
+}
+.homepage-postcard {
+    border-radius: 10px;
+    width: 100%;
+}
+#footer {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #f8f8f8;
+    width: 103%;
+}

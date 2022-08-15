@@ -40,7 +40,7 @@ class SearchEngine {
         $list = array();
         $result = $stmt->get_result();
         while ($arr = mysqli_fetch_array($result)) {
-            $user = User::get_user($conn, $arr['uid'], false);
+            $user = User::get_user_by_uid($conn, $arr['uid'], false);
             $list[] = $user->get_json_array();
         }
         return array(

@@ -9,10 +9,10 @@ window.onscroll = function () {
     }
 }
 
-let curpage = 0;
-
 let sub_pages = new Map();
-let sub_curpage = new Map();
+
+let rcm = $("#recommend");
+let side_bar = $("#side-bar");
 
 function show_modal(modal) {
     $("#" + modal).modal("show");
@@ -97,9 +97,16 @@ function get_reply(page) {
         async: true,
         success: function(data) {
             parse_replies(data);
+            side_bar.sticky();
+            if (turn_to_subpage >= 0) get_sub_reply(turn_to_subpage, turn_to_floor);
+            if (reply_id >= 0 && turn_to_subpage < 0) {
+                window.location.href = '#reply-id-' + reply_id;
+                reply_id = turn_to_subpage = -1;
+            }
         },
         error:  function(XMLHttpRequest, textStatus, errorThrown) {
             alert(XMLHttpRequest.responseText);
+            side_bar.sticky();
         }
     });
 }
@@ -121,6 +128,10 @@ function get_sub_reply(page, floor) {
             div.empty();
             div.append(obj_to_subs(obj));
             div.append(pages_selector(page, sub_pages.get(floor), ((page, num) => '<a onclick="get_sub_reply(' + page + ',' + floor + ')" class="item">' + num + '</a>'), 'margin-top: 16px', 'sub-' + floor));
+            if (reply_id >= 0 && turn_to_subpage >= 0) {
+                window.location.href = '#reply-id-' + reply_id;
+                reply_id = turn_to_subpage = -1;
+            }
         },
         error:  function(XMLHttpRequest, textStatus, errorThrown) {
             alert(XMLHttpRequest.responseText);
@@ -162,7 +173,7 @@ function parse_replies(data) {
     div.empty();
     for (let i = 0; i < obj.length; ++i) {
         sub_pages.set(obj[i]['floor'], parseInt((obj[i]['sub_sum'] - 1) / 5));
-        sub_curpage.set(obj[i]['floor'], 0);
+        if (sub_curpage.get(obj[i]['floor']) === undefined) sub_curpage.set(obj[i]['floor'], 0);
         div.append(
             obj_to_str(obj[i], false)
         );
@@ -184,11 +195,11 @@ function obj_to_str(obj, sub) {
         '<div class="metadata">' +
         '<span class="date">' + obj['time'] + '</span>' +
         '</div>' +
-        '<div class="text">' +
+        '<div class="text" id="reply-id-' + obj['reply_id'] + '">' +
         obj['text'] +
         '</div>' +
         '<div class="actions">' +
-        (!sub ? '<a class="reply" onclick="show_reply_form(' + obj['floor'] + ')">回复</a>' : '') +
+        (!sub ? '<a class="reply" onclick="show_reply_form(' + obj['floor'] + ', ' + obj['reply_id'] + ')">回复</a>' : '<a class="reply" onclick="show_reply_form(' + obj['floor'] + ', ' + obj['reply_id'] + ', \'' + obj['owner_nickname'] + '\')">回复</a>') +
         (admin || local_uid === obj['owner'] ? '<a class="reply" onclick="try_delete_reply(' + obj['floor'] + ',' + obj['sub'] + ',' + obj['sub_floor'] + ')">删除</a>' : '') +
         '</div>' +
         '</div>' +
@@ -205,12 +216,14 @@ function obj_to_subs(obj) {
     }
     return str;
 }
-function show_reply_form(floor) {
+function show_reply_form(floor, id, at = undefined) {
     $("#replier-sub-div").remove();
-    $("#reply-" + floor).append(
+    $("#reply-id-" + id).append(
         '<form class="ui reply form" id="replier-sub-div">' +
         '<div class="field">' +
-        '<textarea id="reply-textarea-sub"></textarea>' +
+        '<textarea id="reply-textarea-sub">' +
+        (at !== undefined ? '回复 @' + at + ' :' : '') +
+        '</textarea>' +
         '</div>' +
         '<div class="ui primary submit labeled icon button" id="reply-button-' + floor + '" onclick="post_reply(' + floor + ', true)">' +
         '<i class="icon edit"></i>回复' +
@@ -271,7 +284,7 @@ function dis_collect() {
         }
     });
 }
-get_reply(0);
+get_reply(curpage);
 function get_copier(tgt) {
     return '<i class="copy outline icon copier copier-float" data-clipboard-target="#' + tgt + '" data-content="复制成功"></i>';
 }
@@ -287,3 +300,24 @@ window.onload = function () {
         load_copier();
     }, 100)
 }
+function recommend() {
+    $.ajax({
+        url: "api.php",
+        type: 'POST',
+        data: {
+            "type": "randomly-select-blogs",
+            "amount": 4
+        },
+        async: true,
+        success: function(data) {
+            rcm.empty();
+            let json = JSON.parse(data);
+            for (let i = 0; i < json.length; ++i) {
+                let obj = json[i];
+                rcm.append('<a href="?id=' + obj['id'] + '">' + obj['title'] + '</a>' + (i === json.length - 1 ? '' : '<div class="ui divider"></div>'));
+            }
+            rcm.removeClass("loading");
+        }
+    });
+}
+recommend();

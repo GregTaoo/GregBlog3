@@ -2,7 +2,7 @@
 include '../include.php';
 $uid = empty($_GET['uid']) ? 0 : $_GET['uid'];
 $loader = new Loader("space");
-$user = User::get_user($loader->info->conn, $uid, false);
+$user = User::get_user_by_uid($loader->info->conn, $uid, false);
 $loader->init($user->exist ? $user->nickname."的空间" : "该用户不存在");
 Loader::add_css("../static/css/menu.css");
 $loader->init_end();

@@ -2,7 +2,7 @@
 class Loader {
     public Info $info;
     public string $id;
-    public int $msgs = 0;
+    public int $msgs = 0, $start_microtime = 0;
 
     public function __construct($id)
     {
@@ -13,6 +13,7 @@ class Loader {
 
     public function init($title)
     {
+        $this->start_microtime = microtime();
         $config = Info::config();
         if (!User::logged()) {
             User::try_login_with_cookie($this->info->conn);
@@ -48,7 +49,6 @@ LABEL;
         echo <<<LABEL
         </html>
 LABEL;
-
     }
 
     public function is_active($id): string
@@ -62,22 +62,20 @@ LABEL;
         $from = $this->id != "login" ? get_full_cur_url_encoded() : "";
         $this->msgs = Message::get_user_messages($this->info->conn, User::uid());
         echo '
-        <div class="ui fixed borderless menu top-menu">
+        <div class="ui fixed borderless icon menu top-menu">
             <div class="ui container">
-                <a class="item '.$this->is_active("index").'" href="/">
-                    <img src="'.get_url_prefix().$config['domain'].$config['icon_path'].'" alt="GregBlog">
+                <a class="header item" href="/">
+                    <img src="'.get_url_prefix().$config['domain'].$config['icon_path'].'" alt="logo">
+                    '.$config['website_name'].'
                 </a>
-                <a class="item '.$this->is_active("search").'" href="/search">
+                <a class="item '.$this->is_active("search").'" href="/search" title="搜索">
                     <i class="search icon"></i>
-                    搜索
                 </a>
-                <a class="item '.$this->is_active("post-blog").'" href="/blog/post.php">
+                <a class="item '.$this->is_active("post-blog").'" href="/blog/post.php" title="发帖">
                     <i class="edit icon"></i>
-                    发帖
                 </a>
-                <a class="item '.$this->is_active("user-center").'" href="/user/center.php">
+                <a class="item '.$this->is_active("user-center").'" href="/user/center.php" title="">
                     <i class="user icon"></i>
-                    个人
                      '.($this->msgs > 0 ? '<div class="ui mini red label">'.$this->msgs.'</div>' : '').'
                 </a>
                 <div class="right menu">
@@ -96,12 +94,14 @@ LABEL;
     {
         echo '
         <div class="ui vertical footer">
-            <div class="ui center aligned grid" style="margin-top: 30px; padding: 20px; background-color: #f8f8f8;">
+            <div class="ui center aligned grid" id="footer">
                 <div class="eight wide column">
-                    <a href="https://github.com/gregtaoo/gregblog3">GregBlog</a>, Managed by <a href="https://github.com/gregtaoo/">GregTao</a>
+                    <a href="https://github.com/gregtaoo/gregblog3">GregBlog</a>, by <a href="https://github.com/gregtaoo/">GregTao</a><br>
+                    Proceeded in '.(microtime() - $this->start_microtime).' s
                 </div>
                 <div class="eight wide column">
-                    <a href="/static/page/credits.html">Credits</a>
+                    <a href="/static/page/credits.html">Credits</a><br>
+                    <a href="https://afdian.net/@gregtao">Donate</a>
                 </div>
             </div>
         </div>
@@ -126,5 +126,10 @@ LABEL;
     public static function get_postcards($config): array
     {
         return explode("|", $config['homepage_postcards']);
+    }
+
+    public static function get_postcard_links($config): array
+    {
+        return explode("|", $config['postcard_links']);
     }
 }

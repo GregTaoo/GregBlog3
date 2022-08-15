@@ -22,11 +22,16 @@ switch ($type) {
         if (!preg_match("/[\w\-_]+@[\w\-_]+.\w+/", $email)) die("邮箱格式错误");
         if (!check_length($password, 6, 100)) die("请填写密码（长度6~100）");
         if (!check_length($nickname, 1, 40)) die("昵称长度限制为1~40字符，你的昵称长度为".strlen($nickname));
-        if (!preg_match("/[\w\-_]+/", $email)) die("昵称仅限 a-z, A-Z, 0-9 以及减号和下划线");
+        if (!preg_match("/[a-zA-Z-_\u4e00-\u9fa5]+/", $nickname)) die("昵称仅允许英文字母以及减号、下划线、中文字符");
         $user = new User($loader->info->conn);
         $user->email = $email;
-        $user->query(true);
+        $user->query("email");
         if ($user->exist) die("该邮箱已经被注册");
+        $user = new User($loader->info->conn);
+        $user->nickname = $nickname;
+        $user->query("nickname");
+        if ($user->exist) die("该用户名已经被注册");
+        $user->email = $email;
         $user->password = $password;
         $user->nickname = $nickname;
         die($user->register() ? "success" : "注册失败");
@@ -42,7 +47,7 @@ switch ($type) {
     }
     case "manage": {
         if (!User::logged() || empty($_SESSION['uid'])) die("你尚未登录");
-        $user = User::get_user($loader->info->conn, User::uid(), true);
+        $user = User::get_user_by_uid($loader->info->conn, User::uid(), true);
         $nickname = $_POST['nickname'];
         if (!check_length($nickname, 1, 40)) die("昵称长度限制为1~40字符，你的昵称长度为".strlen($nickname));
         $intro = empty($_POST['intro']) ? $config['def_user_desc'] : htmlspecialchars($_POST['intro']);

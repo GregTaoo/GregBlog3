@@ -11,7 +11,7 @@ if (!User::logged()) {
     redirect("./login.php?alert=你尚未登录&from=".get_full_cur_url_encoded());
     die;
 }
-$user = User::get_user($loader->info->conn, $uid, true);
+$user = User::get_user_by_uid($loader->info->conn, $uid, true);
 if (!$user->exist) {
     echo_error_body($loader, "用户UID".$uid."不存在");
     die;
@@ -114,6 +114,9 @@ $page = empty($_GET['page']) ? "main" : $_GET['page'];
                 <div class="ui link two doubling cards" id="content"></div>
                 <div id="page-selector"></div>
             </div>
+            <script>
+                let max_size = <?php echo $config['collection_size'] ?>;
+            </script>
             <script src="../static/js/user/center_collection.js"></script>
             <?php
         }

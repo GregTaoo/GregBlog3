@@ -90,12 +90,12 @@ class Blog {
             $this->exist = true;
             $this->owner = new User($this->conn);
             $this->owner->uid = $arr['owner'];
-            $this->owner->query(false);
+            $this->owner->query("uid");
             $this->create_time = $arr['create_time'];
             $this->latest_edit_time = $arr['latest_edit_time'];
             $this->latest_editor = new User($this->conn);
             $this->latest_editor->uid = $arr['latest_editor'];
-            $this->latest_editor->query(false);
+            $this->latest_editor->query("uid");
             $this->title = $arr['title'];
             $this->partition = $arr['parti'];
             $this->visible = $arr['visible'];

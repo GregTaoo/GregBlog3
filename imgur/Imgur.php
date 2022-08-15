@@ -131,7 +131,7 @@ class Imgur {
     public function to_json_array(): array
     {
         $config = Info::config();
-        $user = User::get_user($this->conn, $this->owner, false);
+        $user = User::get_user_by_uid($this->conn, $this->owner, false);
         return array(
             'src' => get_url_prefix().$config['domain'].$config['imgur_file_path'].$this->id.'_'.$this->md5.'.'.$this->suffix,
             'time' => $this->upload_time,

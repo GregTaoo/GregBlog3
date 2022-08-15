@@ -12,18 +12,41 @@ class Message {
 
     public function to_json_array(): array
     {
-        $user = new User($this->conn);
-        $user->uid = $this->from;
-        $user->query(false);
-        return array(
-            'from' => $this->from,
-            'from_nickname' => $user->nickname,
-            'from_emmd5' => md5($user->email),
-            'to' => $this->to,
-            'time' => $this->time,
-            'text' => $this->text,
-            'type' => $this->type
-        );
+        if ($this->from != 0) {
+            $user = new User($this->conn);
+            $user->uid = $this->from;
+            $user->query("uid");
+            if (!$user->exist) {
+                return array(
+                    'from' => $this->from,
+                    'from_nickname' => '该用户已注销',
+                    'from_emmd5' => '',
+                    'to' => $this->to,
+                    'time' => $this->time,
+                    'text' => $this->text,
+                    'type' => $this->type
+                );
+            }
+            return array(
+                'from' => $this->from,
+                'from_nickname' => $user->nickname,
+                'from_emmd5' => md5($user->email),
+                'to' => $this->to,
+                'time' => $this->time,
+                'text' => $this->text,
+                'type' => $this->type
+            );
+        } else {
+            return array(
+                'from' => 0,
+                'from_nickname' => '管理员',
+                'from_emmd5' => '',
+                'to' => $this->to,
+                'time' => $this->time,
+                'text' => $this->text,
+                'type' => $this->type
+            );
+        }
     }
 
     public function insert(): bool
@@ -34,7 +57,7 @@ class Message {
         return $stmt->execute();
     }
 
-    public static function add_reply_message($conn, $from, $sub, $in_blog, $text, $floor)
+    public static function add_reply_message($conn, $from, $sub, $in_blog, $text, $floor, $reply_id)
     {
         $blog = new Blog($conn, $in_blog, false);
         $blog->get_data();
@@ -51,8 +74,25 @@ class Message {
         $config = Info::config();
         $msg = self::of(
             $conn, $from, $to,
-            '在帖子 <a href="'.get_url_prefix().$config['domain'].'/blog/show.php?id='.$in_blog.'&floor='.$floor.'">'.substr($blog->title, 0, 60).'</a> 里回复了你：'.$text,
+            '在帖子 <a href="'.get_url_prefix().$config['domain'].'/blog/show.php?id='.$in_blog.'&replyid='.$reply_id.'&floor='.$floor.'">'.substr($blog->title, 0, 60).'</a> 里回复了你：'.$text,
             "reply");
+        $msg->insert();
+    }
+
+    public static function add_at_message($conn, $from, $to, $in_blog, $text, $floor, $reply_id)
+    {
+        $blog = new Blog($conn, $in_blog, false);
+        $blog->get_data();
+        $reply = new Reply($conn);
+        $reply->in_blog = $in_blog;
+        $reply->floor = $floor;
+        $reply->query_by_floor();
+        if ($from == $to) return;
+        $config = Info::config();
+        $msg = self::of(
+            $conn, $from, $to,
+            '在帖子 <a href="'.get_url_prefix().$config['domain'].'/blog/show.php?id='.$in_blog.'&replyid='.$reply_id.'&floor='.$floor.'">'.substr($blog->title, 0, 60).'</a> 里@提到了你：'.$text,
+            "reply-at");
         $msg->insert();
     }
 
@@ -64,6 +104,12 @@ class Message {
             $msg = self::of($conn, $user->uid, $arr['uid'], "于 ".$user->regtime." 注册了账号（仅管理员接收）", "reg-admin");
             $msg->insert();
         }
+    }
+
+    public static function add_be_banned_message($conn, $user, $time): bool
+    {
+        $msg = self::of($conn, 0, $user, "你已经被封禁到 ".date("Y年m月d日H时i分s秒", $time)." ，了解具体原因或申诉请联系管理员", "be_banned");
+        return $msg->insert();
     }
 
     public static function add_system_broadcast($conn, $text)
@@ -83,7 +129,7 @@ class Message {
         return $msg;
     }
 
-    public static function of_completed($conn, $from, $to, $text, $type, $time, $id): Message
+    public static function of_complete($conn, $from, $to, $text, $type, $time, $id): Message
     {
         $msg = new Message($conn);
         $msg->from = $from;
@@ -103,7 +149,7 @@ class Message {
         $result = mysqli_query($conn, $sql);
         $list = array();
         while ($arr = mysqli_fetch_array($result)) {
-            $msg = self::of_completed($conn, $arr['from'], $arr['to'], $arr['text'], $arr['type'], $arr['time'], $arr['id']);
+            $msg = self::of_complete($conn, $arr['from'], $arr['to'], $arr['text'], $arr['type'], $arr['time'], $arr['id']);
             $list[] = $msg->to_json_array();
             $msg->set_to_read_state();
         }

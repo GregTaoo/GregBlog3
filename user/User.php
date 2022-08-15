@@ -6,14 +6,23 @@ class User {
 
     public mysqli $conn;
     public bool $personal = false;
-    public static string $sql = "SELECT nickname, email, regtime, admin, intro, ban, title, allow_be_srch FROM users WHERE uid = ?";
-    public static string $sql_personal = "SELECT * FROM users WHERE uid = ?";
-    public static string $sql_email = "SELECT nickname, uid, regtime, admin, intro, ban, title, allow_be_srch FROM users WHERE email = ?";
-    public static string $sql_email_personal = "SELECT * FROM users WHERE email = ?";
+
+    private static function get_basic_sql($personal): string
+    {
+        return $personal ? "SELECT * FROM users " : "SELECT nickname, uid, email, regtime, admin, intro, ban, title, allow_be_srch FROM users ";
+    }
+
+    private static array $sqls = array(array(), array());
 
     public function __construct($conn)
     {
         $this->conn = $conn;
+        self::$sqls[0]['uid'] = self::get_basic_sql(false)."WHERE uid = ?";
+        self::$sqls[1]['uid'] = self::get_basic_sql(true)."WHERE uid = ?";
+        self::$sqls[0]['email'] = self::get_basic_sql(false)."WHERE email = ?";
+        self::$sqls[1]['email'] = self::get_basic_sql(true)."WHERE email = ?";
+        self::$sqls[0]['nickname'] = self::get_basic_sql(false)."WHERE nickname = ?";
+        self::$sqls[1]['nickname'] = self::get_basic_sql(true)."WHERE nickname = ?";
     }
 
     public function get_collection(): Collection
@@ -33,39 +42,50 @@ class User {
             'emmd5' => md5($this->email)
         );
     }
-
-    public function query($is_email)
+    
+    public function fetch_data_from_arr($arr, $type)
     {
-        $sql = $is_email ? ($this->personal ? User::$sql_email_personal : User::$sql_email)
-            : ($this->personal ? User::$sql_personal : User::$sql);
+        $this->exist = true;
+        $this->nickname = $arr['nickname'];
+        if ($type != "uid") $this->uid = $arr['uid'];
+        else if ($type != "email") $this->email = $arr['email'];
+        else if ($type != "nickname") $this->nickname = $arr['nickname'];
+        $this->regtime = $arr['regtime'];
+        $this->admin = $arr['admin'];
+        $this->intro = $arr['intro'];
+        $this->ban = $arr['ban'];
+        $this->title = $arr['title'];
+        $this->allow_be_srch = $arr['allow_be_srch'];
+        if ($this->personal) {
+            $this->verify_time = $arr['verify_time'];
+            $this->verified = $arr['verified'];
+            $this->password = $arr['password'];
+            $this->verify_code = $arr['verify_code'];
+        }
+    }
+
+    public function query($type)
+    {
+        try {
+            if (empty(self::$sqls[0][$type])) throw new Exception("No such type: " . $type);
+        } catch (Exception $e) {
+            die($e);
+        }
+        $sql = self::$sqls[$this->personal][$type];
         $stmt = $this->conn->prepare($sql);
-        if ($is_email) $stmt->bind_param("s", $this->email);
-        else $stmt->bind_param("i", $this->uid);
+        if ($type == "email") $stmt->bind_param("s", $this->email);
+        else if ($type == "uid") $stmt->bind_param("i", $this->uid);
+        else if ($type == "nickname") $stmt->bind_param("s", $this->nickname);
         $stmt->execute();
         if ($arr = mysqli_fetch_array($stmt->get_result())) {
-            $this->exist = true;
-            $this->nickname = $arr['nickname'];
-            if ($is_email) $this->uid = $arr['uid'];
-            else $this->email = $arr['email'];
-            $this->regtime = $arr['regtime'];
-            $this->admin = $arr['admin'];
-            $this->intro = $arr['intro'];
-            $this->ban = $arr['ban'];
-            $this->title = $arr['title'];
-            $this->allow_be_srch = $arr['allow_be_srch'];
-            if ($this->personal) {
-                $this->verify_time = $arr['verify_time'];
-                $this->verified = $arr['verified'];
-                $this->password = $arr['password'];
-                $this->verify_code = $arr['verify_code'];
-            }
+            $this->fetch_data_from_arr($arr, $type);
         }
     }
 
     public function update_simply(): bool
     {
-        $stmt = $this->conn->prepare("UPDATE users SET nickname = ?, password = ?, intro = ?, title = ?, allow_be_srch = ?, ban = ? WHERE uid = ?");
-        $stmt->bind_param("ssssiii", $this->nickname, $this->password, $this->intro, $this->title, $this->allow_be_srch, $this->ban, $this->uid);
+        $stmt = $this->conn->prepare("UPDATE users SET password = ?, intro = ?, title = ?, allow_be_srch = ?, ban = ? WHERE uid = ?");
+        $stmt->bind_param("sssiii",$this->password, $this->intro, $this->title, $this->allow_be_srch, $this->ban, $this->uid);
         return $stmt->execute();
     }
 
@@ -91,7 +111,7 @@ class User {
 
     public static function login($conn, $email, $password, &$error): bool
     {
-        $user = User::get_user_email($conn, $email, true);
+        $user = User::get_user_by_email($conn, $email, true);
         if ($user->exist && (password_verify($password, $user->password) || md5($password) == $user->password)) {
             $user->set_session();
             return true;
@@ -121,21 +141,21 @@ class User {
         return true;
     }
 
-    public static function get_user($conn, $uid, $personal): User
+    public static function get_user_by_uid($conn, $uid, $personal): User
     {
         $user = new User($conn);
         $user->uid = $uid;
         $user->personal = $personal;
-        $user->query(false);
+        $user->query("uid");
         return $user;
     }
 
-    public static function get_user_email($conn, $email, $personal): User
+    public static function get_user_by_email($conn, $email, $personal): User
     {
         $user = new User($conn);
         $user->email = $email;
         $user->personal = $personal;
-        $user->query(true);
+        $user->query("email");
         return $user;
     }
 
@@ -158,9 +178,9 @@ class User {
         $code = rand(100000, 999999);
         $time = time();
         $stmt->bind_param("iii", $code, $time, $this->uid);
-        $body = "<h3>这里是".$config['website_name']."</h3><br>请点击链接验证您的邮箱：
-                <a href=\"".get_url_prefix().$config['domain']."/user/verify.php?code=".$code."\">链接至验证页面</a>";
-        return $stmt->execute() && Mail::send_email($this->email, "验证您的邮箱", $body, $err);
+        $body = "<h3>这里是 ".$config['website_name']."</h3><br>请点击链接验证您的邮箱：
+                <a href=\"".get_url_prefix().$config['domain']."/user/verify.php?code=".$code."\">链接至验证页面</a><br>";
+        return $stmt->execute() && Mail::send_email($this->email, "验证您的 ".$config['website_name']." 账户邮箱", $body, $err);
     }
 
     public function set_to_verified(): bool
@@ -246,7 +266,7 @@ class User {
 
     public static function update_ban($conn)
     {
-        $user = self::get_user($conn, User::uid(), true);
+        $user = self::get_user_by_uid($conn, User::uid(), true);
         $user->set_session();
     }
 

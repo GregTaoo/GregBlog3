@@ -1,6 +1,6 @@
-function change_cursor_inline(delta) {
+function change_cursor_inline(deltaX, deltaY = 0) {
     let cs = editor.getCursor();
-    let ch = cs.ch + delta, ln = cs.line;
+    let ch = cs.ch + deltaX, ln = cs.line + deltaY;
     setTimeout(function () {
         editor.setCursor(ln, ch);
         editor.focus();
@@ -10,9 +10,9 @@ function editor_surround(str) {
     change_cursor_inline(str.length);
     editor.replaceSelection(str + editor.getSelection() + str);
 }
-function editor_tag(str) {
-    change_cursor_inline(str.length + 2);
-    editor.replaceSelection("[" + str + "]" + editor.getSelection() + "[/" + str + "]");
+function editor_tag(str, enter = false) {
+    change_cursor_inline(str.length + 2, 1);
+    editor.replaceSelection("[" + str + "]" + (enter ? "\n" : "") + editor.getSelection() + (enter ? "\n" : "") + "[/" + str + "]");
 }
 function editor_add(str) {
     change_cursor_inline(str.length);
