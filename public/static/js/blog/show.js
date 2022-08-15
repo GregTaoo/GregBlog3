@@ -84,6 +84,16 @@ function post_reply(floor, sub) {
         btn.removeClass("disabled");
     }, 5000);
 }
+function jump_to_reply() {
+    let div = $('#reply-id-' + reply_id);
+    let top = div.offset().top;
+    $(window).scrollTop(top - 60);
+    div.addClass("highlighter");
+    setTimeout(function () {
+        div.removeClass("highlighter");
+    }, 2000);
+    reply_id = turn_to_subpage = -1;
+}
 function get_reply(page) {
     curpage = page;
     $.ajax({
@@ -100,8 +110,7 @@ function get_reply(page) {
             side_bar.sticky();
             if (turn_to_subpage >= 0) get_sub_reply(turn_to_subpage, turn_to_floor);
             if (reply_id >= 0 && turn_to_subpage < 0) {
-                window.location.href = '#reply-id-' + reply_id;
-                reply_id = turn_to_subpage = -1;
+                jump_to_reply();
             }
         },
         error:  function(XMLHttpRequest, textStatus, errorThrown) {
@@ -129,8 +138,7 @@ function get_sub_reply(page, floor) {
             div.append(obj_to_subs(obj));
             div.append(pages_selector(page, sub_pages.get(floor), ((page, num) => '<a onclick="get_sub_reply(' + page + ',' + floor + ')" class="item">' + num + '</a>'), 'margin-top: 16px', 'sub-' + floor));
             if (reply_id >= 0 && turn_to_subpage >= 0) {
-                window.location.href = '#reply-id-' + reply_id;
-                reply_id = turn_to_subpage = -1;
+                jump_to_reply();
             }
         },
         error:  function(XMLHttpRequest, textStatus, errorThrown) {
@@ -190,15 +198,15 @@ function obj_to_str(obj, sub) {
         '<a class="avatar" href="' + user_href + '">' +
         '<img src="https://cravatar.cn/avatar/' + obj['owner_emmd5'] + '?d=' + avatar + '" alt="avatar">' +
         '</a>' +
-        '<div class="content" ' + (sub ? '' : 'id="reply-' + obj['floor'] + '"') + '>' +
+        '<div class="content" id="reply-id-' + obj['reply_id'] + '">' +
         '<a class="author" href="' + user_href + '">' + obj['owner_nickname'] + ' ' + (obj['owner_admin'] ? admin_label : '') + (obj['owner'] === uid ? owner_label : '') + obj['owner_title'] + '</a>' +
         '<div class="metadata">' +
         '<span class="date">' + obj['time'] + '</span>' +
         '</div>' +
-        '<div class="text" id="reply-id-' + obj['reply_id'] + '">' +
+        '<div class="text">' +
         obj['text'] +
         '</div>' +
-        '<div class="actions">' +
+        '<div class="actions" ' + (sub ? '' : 'id="reply-' + obj['floor'] + '"') + '>' +
         (!sub ? '<a class="reply" onclick="show_reply_form(' + obj['floor'] + ', ' + obj['reply_id'] + ')">回复</a>' : '<a class="reply" onclick="show_reply_form(' + obj['floor'] + ', ' + obj['reply_id'] + ', \'' + obj['owner_nickname'] + '\')">回复</a>') +
         (admin || local_uid === obj['owner'] ? '<a class="reply" onclick="try_delete_reply(' + obj['floor'] + ',' + obj['sub'] + ',' + obj['sub_floor'] + ')">删除</a>' : '') +
         '</div>' +

@@ -15,6 +15,7 @@ $type = $_POST['type'];
 $config = Info::config();
 switch ($type) {
     case "register": {
+        if (!$config['allow_register']) die("当前不允许注册");
         $email = $_POST['email'];
         $password = $_POST['password'];
         $nickname = $_POST['nickname'];
@@ -37,6 +38,7 @@ switch ($type) {
         die($user->register() ? "success" : "注册失败");
     }
     case "login": {
+        if (!$config['allow_login']) die("当前不允许登录");
         $email = $_POST['email'];
         $password = $_POST['password'];
         $auto_login = $_POST['auto-login'];
@@ -53,6 +55,10 @@ switch ($type) {
         $intro = empty($_POST['intro']) ? $config['def_user_desc'] : htmlspecialchars($_POST['intro']);
         if (!is_text($intro)) die("个性签名长度限制为0~65535个字符，你的签名长度为".strlen($intro));
         $user->nickname = $nickname;
+        $usercheck = new User($loader->info->conn);
+        $usercheck->nickname = $nickname;
+        $usercheck->query("nickname");
+        if ($usercheck->exist) die("该用户名已经被占用");
         $user->intro = $intro;
         $password = $_POST['password'];
         $user->allow_be_srch = empty($_POST['allow_be_srch']) || $_POST['allow_be_srch'] == "true";

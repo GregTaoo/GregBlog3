@@ -6,6 +6,7 @@ if (!empty($_POST['type'])) {
     $type = $_POST['type'];
     switch ($type) {
         case "create": {
+            if (!$config['allow_post_blog']) die("当前不允许发帖");
             if (!User::logged()) die("你尚未登录");
             if (!User::verified()) die("请先验证邮箱");
             $info = new Info();
@@ -33,6 +34,7 @@ if (!empty($_POST['type'])) {
             die($blog->create_blog() ? "success".$blog->id : "发帖失败");
         }
         case "edit": {
+            if (!$config['allow_post_blog']) die("当前不允许发帖");
             if (!User::logged()) die("你尚未登录");
             if (!User::verified()) die("请先验证邮箱");
             $info = new Info();
@@ -90,6 +92,7 @@ if (!empty($_POST['type'])) {
             die($reply->delete() ? "success" : "删除失败");
         }
         case "post-reply": {
+            if (!$config['allow_reply']) die("当前不允许评论");
             if (!User::logged()) die("你尚未登录");
             if (!User::verified()) die("请先验证邮箱");
             $info = new Info();

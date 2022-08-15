@@ -15,13 +15,13 @@ $is_edit = !empty($_GET['is_edit']) && $_GET['is_edit'] == "1";
 $id = $is_edit ? (empty($_GET['id']) ? 0 : $_GET['id']) : 0;
 $blog = new Blog($loader->info->conn, $id, true);
 if ($is_edit) $blog->get_data();
-if ($is_edit && !$blog->have_permission()) {
+if (($is_edit && !$blog->have_permission()) || !$config['allow_post_blog']) {
     ?>
     <body xmlns="http://www.w3.org/1999/html">
     <?php $loader->top_menu(); ?>
     <div class="ui main container" style="margin-top: 64px">
         <div class="ui error message" id="error">
-            你没有权限！
+            你没有权限或不被允许！
         </div>
     </div>
     </body>
@@ -42,8 +42,7 @@ if ($is_edit && !$blog->have_permission()) {
         } else if (!User::verified()) {
             redirect("../user/verify.php");
             die;
-        }
-        if (User::local_be_banned($loader->info->conn)) {
+        } else if (User::local_be_banned($loader->info->conn)) {
             notice_be_banned(User::be_banned_to());
             die;
         }

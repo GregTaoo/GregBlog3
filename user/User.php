@@ -84,8 +84,8 @@ class User {
 
     public function update_simply(): bool
     {
-        $stmt = $this->conn->prepare("UPDATE users SET password = ?, intro = ?, title = ?, allow_be_srch = ?, ban = ? WHERE uid = ?");
-        $stmt->bind_param("sssiii",$this->password, $this->intro, $this->title, $this->allow_be_srch, $this->ban, $this->uid);
+        $stmt = $this->conn->prepare("UPDATE users SET nickname = ?, password = ?, intro = ?, title = ?, allow_be_srch = ?, ban = ? WHERE uid = ?");
+        $stmt->bind_param("ssssiii", $this->nickname,$this->password, $this->intro, $this->title, $this->allow_be_srch, $this->ban, $this->uid);
         return $stmt->execute();
     }
 

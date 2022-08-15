@@ -50,6 +50,21 @@ blockquote {
     margin-top: 60px !important;
 }
 
+.highlighter {
+    animation: 2s highlighter;
+}
+
+.comment .content {
+    border-radius: 6px;
+    padding: 4px;
+}
+
+@keyframes highlighter {
+    0% {background-color: white}
+    20% {background-color: #a8a8a8}
+    100% {background-color: white}
+}
+
 @keyframes sticky-rocket {
     0% {margin-bottom: 20px}
     25% {margin-bottom: 40px}

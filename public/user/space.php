@@ -23,6 +23,7 @@ if (!$user->exist) {
     <body>
     <?php $loader->top_menu(); ?>
     <div class="ui main container" style="margin-top: 64px">
+        <?php if (User::logged() && $uid == User::uid()) echo '<div class="ui message">你正在其他用户视角中，点击<a href="/user/center.php">返回用户中心</a></div>' ?>
         <div class="ui horizontal segments" style="overflow: hidden">
             <div class="ui segment">
                 <h2 class="ui header" style="text-align: center">
