@@ -75,8 +75,12 @@ create table replies
     sub_floor int        default 0     null,
     text      text collate utf8mb4_bin null,
     time      tinytext                 null,
-    sub_sum   int        default 0     null
-);
+    sub_sum   int        default 0     null,
+    reply_id  int        auto_increment not null,
+    constraint replies_reply_id_uindex
+        unique (reply_id)
+)
+    auto_increment = 1;
 
 create table site
 (
