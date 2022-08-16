@@ -218,6 +218,11 @@ class User {
         return empty($_SESSION['uid']) ? 0 : $_SESSION['uid'];
     }
 
+    public static function nickname(): string
+    {
+        return empty($_SESSION['nickname']) ? 'NULL' : $_SESSION['nickname'];
+    }
+
     public static function admin(): int
     {
         return empty($_SESSION['admin']) ? 0 : $_SESSION['admin'];

@@ -96,7 +96,7 @@ LABEL;
         <div class="ui vertical footer">
             <div class="ui center aligned grid" id="footer">
                 <div class="eight wide column">
-                    <a href="https://github.com/gregtaoo/gregblog3">GregBlog</a>, by <a href="https://github.com/gregtaoo/">GregTao</a><br>
+                    <a href="https://github.com/gregtaoo/gregblog3">GregBlog</a> '.Info::$version.', by <a href="https://github.com/gregtaoo/">GregTao</a><br>
                     Proceeded in '.(microtime() - $this->start_microtime).' s
                 </div>
                 <div class="eight wide column">

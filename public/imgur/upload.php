@@ -5,18 +5,30 @@ $config = Info::config();
 $step = empty($_GET['step']) ? 0 : $_GET['step'];
 $iframe = empty($_GET['iframe']) ? 0 : $_GET['iframe'];
 $error = get_normal_msg("上传情况");
-if (!User::logged()) {
-    echo_error_body($loader,"请登录");
-    redirect("/user/login.php?alert=请先登录&from=".get_full_cur_url_encoded());
-    die;
-}
-if (!User::verified()) {
-    redirect("/user/verify.php?from=".get_full_cur_url_encoded());
-    die;
-}
-if (User::local_be_banned($loader->info->conn)) {
-    notice_be_banned(User::be_banned_to());
-    die;
+if ($_FILES['image']['size'] > 0) {
+    if (!User::logged()) {
+        die("!您尚未登录");
+    }
+    if (!User::verified()) {
+        die("!请先完成邮箱验证");
+    }
+    if (User::local_be_banned($loader->info->conn)) {
+        die("!你尚处封禁状态，解封时间: ".User::be_banned_to());
+    }
+} else {
+    if (!User::logged()) {
+        echo_error_body($loader, "请登录");
+        redirect("/user/login.php?alert=请先登录&from=" . get_full_cur_url_encoded());
+        die;
+    }
+    if (!User::verified()) {
+        redirect("/user/verify.php?from=" . get_full_cur_url_encoded());
+        die;
+    }
+    if (User::local_be_banned($loader->info->conn)) {
+        notice_be_banned(User::be_banned_to());
+        die;
+    }
 }
 $img_list = Imgur::get_list_by_uid($loader->info->conn, $_SESSION['uid']);
 $total_memory = 0;

@@ -138,7 +138,7 @@ class Reply {
     public function send_at_msgs()
     {
         preg_replace_callback(
-            "/ @([a-zA-Z-_\u4e00-\u9fa5]{1,64}) /",
+            "/@([a-zA-Z-_\u4e00-\u9fa5]{1,64}) /",
             function ($result) {
                 $user = new User($this->conn);
                 $user->nickname = $result[1];
@@ -155,7 +155,7 @@ class Reply {
     public function get_parsed_text(): string
     {
         return preg_replace_callback(
-            "/ @([a-zA-Z-_\u4e00-\u9fa5]{1,64}) /",
+            "/@([a-zA-Z-_\u4e00-\u9fa5]{1,64}) /",
             function ($result) {
                 $user = new User($this->conn);
                 $user->nickname = $result[1];

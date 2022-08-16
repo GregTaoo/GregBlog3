@@ -79,6 +79,10 @@ function upload() {
     xhr.upload.onprogress = process_rating;
     xhr.onload = function (e) {
         console.log(e.currentTarget.responseText);
+        if (e.currentTarget.responseText[0] === '!') {
+            msg(e.currentTarget.responseText);
+            return;
+        }
         let obj = JSON.parse(e.currentTarget.responseText);
         msg(obj['msg']);
         file_input_btn.removeClass("loading");

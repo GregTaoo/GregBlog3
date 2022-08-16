@@ -18,14 +18,23 @@ if (!$user->exist) {
     <body>
     <?php $loader->top_menu(); ?>
     <div class="ui main container" style="margin-top: 64px">
-        <div class="ui error message" id="error" hidden></div>
         <div class="ui middle aligned center aligned grid" style="margin-top: 64px">
             <div class="row">
                 <div class="column" style="max-width: 640px">
+                    <div class="ui error message" id="error" hidden></div>
                     <h2 class="ui image header">
                         资料修改
                     </h2>
                     <form class="ui large form">
+                        <div class="ui horizontal segments" style="align-items: center">
+                            <div class="ui segment"><?php echo $user->get_avatar_img(); ?></div>
+                            <div class="ui segment">
+                                <a href="https://cravatar.cn/emails" class="ui button">
+                                    <i class="user circle icon"></i>
+                                    更换头像（站外）
+                                </a>
+                            </div>
+                        </div>
                         <div class="ui existing segment">
                             <div class="field">
                                 <div class="ui left icon input">

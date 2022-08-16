@@ -55,10 +55,12 @@ switch ($type) {
         $intro = empty($_POST['intro']) ? $config['def_user_desc'] : htmlspecialchars($_POST['intro']);
         if (!is_text($intro)) die("个性签名长度限制为0~65535个字符，你的签名长度为".strlen($intro));
         $user->nickname = $nickname;
-        $usercheck = new User($loader->info->conn);
-        $usercheck->nickname = $nickname;
-        $usercheck->query("nickname");
-        if ($usercheck->exist) die("该用户名已经被占用");
+        if ($nickname != User::nickname()) {
+            $usercheck = new User($loader->info->conn);
+            $usercheck->nickname = $nickname;
+            $usercheck->query("nickname");
+            if ($usercheck->exist) die("该用户名已经被占用");
+        }
         $user->intro = $intro;
         $password = $_POST['password'];
         $user->allow_be_srch = empty($_POST['allow_be_srch']) || $_POST['allow_be_srch'] == "true";
@@ -67,7 +69,11 @@ switch ($type) {
             $user->password = password_hash($password, PASSWORD_DEFAULT);
             session_destroy();
         }
-        die($user->update_simply() ? "success" : "修改失败");
+        if ($user->update_simply()) {
+            $user->set_session();
+            die("success");
+        }
+        die("修改失败");
     }
     case "get-message": {
         if (!User::logged() || empty($_SESSION['uid'])) die("你尚未登录");

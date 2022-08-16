@@ -53,10 +53,6 @@ $page = empty($_GET['page']) ? "main" : $_GET['page'];
             </div>
         </div>
         <div class="ui segment">
-            <a href="https://cravatar.cn/emails" class="ui button">
-                <i class="user circle icon"></i>
-                更换头像（站外）
-            </a>
             <a href="./manage.php" class="ui blue button">
                 <i class="address card icon"></i>
                 修改资料
