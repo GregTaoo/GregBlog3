@@ -79,8 +79,8 @@ else if ($step == 2) {
     $config = (array) json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/../config/Config.json'));
     $conn = mysqli_connect($config['mysql_ip'], $config['mysql_username'], $config['mysql_password'], $config['mysql_database']);
     $regtime = (new DateTime()) -> format('Y-m-d H:i:s');
-    $sql = "INSERT INTO users (email, nickname, password, regtime, admin, intro, title) 
-            VALUES ('".$_POST['email']."', '".$_POST['name']."', '".password_hash($_POST['pw'], PASSWORD_DEFAULT)."', '".$regtime."', 1, '站长', '站长')";
+    $sql = "INSERT INTO users (verified, email, nickname, password, regtime, admin, intro, title) 
+            VALUES (1, '".$_POST['email']."', '".$_POST['name']."', '".password_hash($_POST['pw'], PASSWORD_DEFAULT)."', '".$regtime."', 1, '站长', '站长')";
     if (!mysqli_query($conn, $sql)) {
         die('新建账户失败！请<a href="?step=1&jump=1">重试</a><br>'.mysqli_error($conn));
     }
