@@ -69,6 +69,7 @@ function upload() {
     }
     if (!check_file_type(file_input[0].files[0].name)) {
         alert("不支持的文件格式");
+        return;
     }
     let fd = new FormData();
     fd.append("image", file);
