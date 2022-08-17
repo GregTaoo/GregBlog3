@@ -78,6 +78,7 @@ LABEL;
                     <i class="user icon"></i>
                      '.($this->msgs > 0 ? '<div class="ui mini red label">'.$this->msgs.'</div>' : '').'
                 </a>
+                '.($this->id == "redirect" ? '' : '
                 <div class="right menu">
                     <div class="item">
                         <a class="ui green basic button" href="'.(User::logged() ? '/user/api.php?logout=1&from='.$from : '/user/login.php?from='.$from).'">
@@ -85,6 +86,7 @@ LABEL;
                         </a>
                     </div>
                 </div>
+                ').'
             </div>
         </div>
         ';

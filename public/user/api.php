@@ -19,7 +19,7 @@ switch ($type) {
         $email = $_POST['email'];
         $password = $_POST['password'];
         $nickname = $_POST['nickname'];
-        if (!is_tinytext($email) && !empty($email)) die("邮箱长度限制为1~255字符，你的邮箱长度为".strlen($email));
+        if (!is_tinytext($email) || empty($email)) die("邮箱长度限制为1~255字符，你的邮箱长度为".strlen($email));
         if (!preg_match("/[\w\-_]+@[\w\-_]+.\w+/", $email)) die("邮箱格式错误");
         if (!check_length($password, 6, 100)) die("请填写密码（长度6~100）");
         if (!check_length($nickname, 1, 40)) die("昵称长度限制为1~40字符，你的昵称长度为".strlen($nickname));
@@ -42,7 +42,7 @@ switch ($type) {
         $email = $_POST['email'];
         $password = $_POST['password'];
         $auto_login = $_POST['auto-login'];
-        if (!is_tinytext($email) && !empty($email)) die("邮箱长度限制为1~255字符，你的邮箱长度为".strlen($email));
+        if (!is_tinytext($email) || empty($email)) die("邮箱长度限制为1~255字符，你的邮箱长度为".strlen($email));
         if (!check_length($password, 6, 100)) die("请填写6-100位密码");
         if ($auto_login == "true") User::set_auto_login_cookie($email, $password);
         die(User::login($loader->info->conn, $email, $password, $error) ? "success" : "登录失败，".$error);

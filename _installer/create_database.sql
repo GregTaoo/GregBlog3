@@ -1,3 +1,22 @@
+create table blog_data
+(
+    id           int                  not null,
+    title        text                 not null,
+    owner        int                  not null,
+    tags         text                 not null,
+    likes        int        default 0 not null,
+    time         datetime             not null,
+    latestedit   datetime             not null,
+    reply_cnt    int        default 0 not null,
+    latesteditor int        default 0 not null,
+    editors      text                 not null,
+    visible      tinyint(1) default 1 not null,
+    description  text                 not null
+);
+
+create index id
+    on blog_data (id);
+
 create table blogs
 (
     id               int        default 0 not null
@@ -39,6 +58,21 @@ create table collections
     cnt  int default 0 null
 );
 
+create table forgetpw
+(
+    id        int auto_increment
+        primary key,
+    password  text                 null,
+    timestamp int                  null,
+    code      text                 null,
+    uid       int                  not null,
+    checked   tinyint(1) default 0 not null,
+    reason    tinytext             null,
+    constraint forgetpw_id_uindex
+        unique (id)
+)
+    auto_increment = 1;
+
 create table imgur
 (
     owner       int      null,
@@ -49,7 +83,8 @@ create table imgur
         primary key,
     size        int      null,
     suffix      tinytext null
-);
+)
+    auto_increment = 1;
 
 create table messages
 (
@@ -66,6 +101,19 @@ create table messages
 )
     auto_increment = 1;
 
+create table msg_data
+(
+    from_uid int                  not null,
+    to_uid   int                  not null,
+    text     text                 not null,
+    time     int                  not null,
+    datetime datetime             not null,
+    be_read  tinyint(1) default 0 not null
+);
+
+create index to_uid
+    on msg_data (to_uid);
+
 create table replies
 (
     in_blog   int        default 0     null,
@@ -76,18 +124,44 @@ create table replies
     text      text collate utf8mb4_bin null,
     time      tinytext                 null,
     sub_sum   int        default 0     null,
-    reply_id  int        auto_increment not null,
-    constraint replies_reply_id_uindex
-        unique (reply_id)
+    reply_id  int auto_increment
+        primary key
 )
     auto_increment = 1;
+
+create table reply_data
+(
+    owner    int                          not null,
+    text     text collate utf8mb4_bin     not null,
+    likes    int default 0                not null,
+    time     int                          not null,
+    datetime datetime                     not null,
+    blogid   int                          not null,
+    inid     int                          not null,
+    email    text collate utf8_unicode_ci not null
+)
+    collate = utf8mb4_unicode_ci;
 
 create table site
 (
     blogs_sum int default 0 null
 );
 
-insert into site (`blogs_sum`) VALUES (0);
+create table user_data
+(
+    uid         int                                      not null
+        primary key,
+    email       text                                     not null,
+    password    text                                     not null,
+    nickname    text                                     not null,
+    checked     tinyint(1) default 0                     not null,
+    passport    int        default -1                    not null,
+    admin       tinyint(1) default 0                     null,
+    regtime     datetime   default '1949-10-01 00:00:00' not null,
+    time        int        default 0                     not null,
+    theme       text                                     not null,
+    description text                                     not null
+);
 
 create table users
 (
@@ -108,4 +182,10 @@ create table users
         unique (uid)
 )
     auto_increment = 1;
+
+create table website_data
+(
+    user_cnt int default 0 not null,
+    blog_cnt int           not null
+);
 

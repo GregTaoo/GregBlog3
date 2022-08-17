@@ -63,6 +63,7 @@ function post_reply(floor, sub) {
             try {
                 let obj = JSON.parse(data);
                 if (obj['statu'] === "success") {
+                    $("#replier-sub-div").remove();
                     if (!sub) sub_pages.set(floor + 1, 0);
                     let div = $(sub ? "#reply-subs-" + floor : "#blog-replies");
                     div.css("display", "block");

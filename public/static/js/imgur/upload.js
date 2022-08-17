@@ -24,7 +24,7 @@ let msgbx = $("#msg");
 let path = $("#path");
 
 function check_file_type(name) {
-    return ["jpg", "png", "jpeg", "tiff", "webp", "gif", "bmp", "apng"].includes(name.split('.').pop())
+    return ["jpg", "png", "jpeg", "tiff", "webp", "gif", "bmp", "apng"].includes(name.split('.').pop().toLowerCase())
 }
 
 let droptarget = document.getElementById("file-upload")

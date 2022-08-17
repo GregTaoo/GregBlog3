@@ -39,7 +39,10 @@ $loader->init_end();
                             <div class="ui fluid large submit primary button" id="login">登录</div>
                         </div>
                     </form>
-                    <a class="ui fluid large basic button" style="margin-top: 20px" href="./register.php">注册</a>
+                    <div class="ui fluid large basic buttons" style="margin-top: 20px">
+                        <a href="./register.php" class="ui button">注册</a>
+                        <a href="./forgetpw.php" class="ui button">忘记密码</a>
+                    </div>
                 </div>
             </div>
         </div>

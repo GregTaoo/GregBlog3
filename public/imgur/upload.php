@@ -38,16 +38,17 @@ if ($step == 1) {
     $imgur = new Imgur($loader->info->conn);
     $imgur->type = $_FILES['image']['type'];
     $imgur->size = $_FILES['image']['size'];
+    $file_name = strtolower($_FILES['image']['name']);
     if (count($img_list) > $config['max_imgur_sum']) {
         $error = get_error_msg("你已经存放了 ".$config['max_imgur_sum']." 张图片，请先清理");
     } else if ($out_of_memory || $imgur->size + $total_memory > $config['max_imgur_memory']) {
         $error = get_error_msg("你的空间已满");
     } else if ($imgur->size > $config['max_imgur_single_memory'] || $imgur->size == 0) {
         $error = get_error_msg("文件太大或不存在！最大 ".round($config['max_imgur_single_memory'] / 1024 / 1024, 2)." MB");
-    } else if (!Imgur::check_type($_FILES['image']['name'])) {
+    } else if (!Imgur::check_type($file_name)) {
         $error = get_error_msg("暂不支持此类型文件");
     } else {
-        $arr = explode('.', $_FILES['image']['name']);
+        $arr = explode('.', $file_name);
         $sf = array_pop($arr);
         $imgur->content = file_get_contents($_FILES['image']['tmp_name']);
         $imgur->owner = $_SESSION['uid'];

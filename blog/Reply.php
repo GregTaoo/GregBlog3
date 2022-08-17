@@ -146,7 +146,7 @@ class Reply {
                 if ($user->exist) {
                     Message::add_at_message($this->conn, $this->owner, $user->uid, $this->in_blog, $this->text, $this->floor, $this->reply_id);
                 }
-                return $result;
+                return $result[0];
             },
             $this->text, 10
         );
@@ -163,7 +163,7 @@ class Reply {
                 if ($user->exist) {
                     return '<a href="/user/space.php?uid='.$user->uid.'">'.$result[0].'</a>';
                 }
-                return $result;
+                return $result[0];
             },
             $this->text, 10
         );

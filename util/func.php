@@ -46,6 +46,14 @@ function redirect($url)
 {
     echo '<script>window.location.replace("'.$url.'");</script>';
 }
+function redirect_delays($url, $delay)
+{
+    echo '<script>
+            setTimeout(
+                function () {window.location.replace("' . $url . '")},
+                  0 + '.$delay.');
+          </script>';
+}
 function refresh($time)
 {
     echo '<script>
