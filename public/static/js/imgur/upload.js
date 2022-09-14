@@ -61,6 +61,27 @@ function file_input_onchange() {
         };
     }
 }
+document.addEventListener("paste", function (e){
+    let cbd = e.clipboardData;
+    let ua = window.navigator.userAgent;
+    // 如果是 Safari 直接 return
+    if ( !(e.clipboardData && e.clipboardData.items) ) {
+        return;
+    }
+    // Mac平台下Chrome49版本以下 复制Finder中的文件的Bug Hack掉
+    if(cbd.items && cbd.items.length === 2 && cbd.items[0].kind === "string" && cbd.items[1].kind === "file" &&
+        cbd.types && cbd.types.length === 2 && cbd.types[0] === "text/plain" && cbd.types[1] === "Files" &&
+        ua.match(/Macintosh/i) && Number(ua.match(/Chrome\/(\d{2})/i)[1]) < 49){
+        return;
+    }
+    if (cbd.items.length === 0) return;
+    if (cbd.items[0].kind !== 'file') return;
+    let file = cbd.items[0].getAsFile();
+    if (file.size <= 0) return;
+    file_input[0].files = cbd.files;
+    console.log('pasted:' + file.name);
+    file_input_onchange();
+}, false);
 function upload() {
     let file = file_input[0].files[0];
     if (!file) {

@@ -14,3 +14,4 @@ include $_SERVER['DOCUMENT_ROOT'].'/../admin/Broadcast.php';
 include $_SERVER['DOCUMENT_ROOT'].'/../search/SearchEngine.php';
 include $_SERVER['DOCUMENT_ROOT'].'/../user/Collection.php';
 include $_SERVER['DOCUMENT_ROOT'].'/../user/ForgetPw.php';
+include $_SERVER['DOCUMENT_ROOT'].'/../user/RememberPw.php';

@@ -1,6 +1,6 @@
 <?php
 class User {
-    public int $uid, $verify_time, $admin, $ban = 0;
+    public int $uid = 0, $verify_time, $admin, $ban = 0;
     public string $nickname, $email, $password, $regtime, $verify_code, $intro, $title = "";
     public bool $verified, $exist = false, $allow_be_srch = true;
 
@@ -89,24 +89,32 @@ class User {
         return $stmt->execute();
     }
 
-    public static function try_login_with_cookie($conn): bool
+    public static function try_login_with_cookie(?mysqli $conn): bool
     {
-        if (!empty($_COOKIE['email']) && !empty($_COOKIE['password'])) {
-            return self::login($conn, $_COOKIE['email'], $_COOKIE['password'], $err);
+        if (!empty($_COOKIE['email']) && !empty($_COOKIE['keypw'])) {
+            $email = $_COOKIE['email'];
+            $keypw = $_COOKIE['keypw'];
+            if (RememberPw::check($conn, $email, $keypw)) {
+                $user = User::get_user_by_email($conn, $email, true);
+                $user->set_session();
+                return true;
+            }
         }
         return false;
     }
 
-    public static function set_auto_login_cookie($email, $password)
+    public static function set_auto_login_cookie(?mysqli $conn, $email)
     {
-        setcookie("email", $email, time() + 7 * 24 * 60 * 60, '/');
-        setcookie("password", $password, time() + 7 * 24 * 60 * 60, '/');
+        $rmber = RememberPw::add($conn, $email, 7 * 24 * 60 * 60);
+        setcookie("email", $email, $rmber->expires, '/');
+        setcookie("keypw", $rmber->keypw, $rmber->expires, '/');
     }
 
-    public static function clear_auto_login_cookie()
+    public static function clear_auto_login_cookie(?mysqli $conn)
     {
+        if (!empty($_COOKIE['keypw'])) RememberPw::delete_by_key($conn, $_COOKIE['keypw']);
         setcookie("email", "", 0, '/');
-        setcookie("password", "", 0, '/');
+        setcookie("keypw", "", 0, '/');
     }
 
     public static function login($conn, $email, $password, &$error): bool

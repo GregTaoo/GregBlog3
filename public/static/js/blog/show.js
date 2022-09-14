@@ -301,6 +301,7 @@ let codes = 0;
 window.onload = function () {
     setTimeout(function () {
         $('code').each(function () {
+            if (!$(this).hasClass("hljs")) return;
             this.id = 'code-' + ++codes;
             $(this).css("position", "relative");
             let txt = $(this).html();

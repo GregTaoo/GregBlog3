@@ -3,7 +3,7 @@ include '../include.php';
 $loader = new Loader("user-api");
 if (!empty($_GET['logout']) && $_GET['logout'] == 1) {
     session_destroy();
-    User::clear_auto_login_cookie();
+    User::clear_auto_login_cookie($loader->info->conn);
     $logout = cur_url_decode($_GET['from']);
     $config = Info::config();
     $logout = empty($logout) ? get_url_prefix().$config['domain'] : $logout;
@@ -44,8 +44,9 @@ switch ($type) {
         $auto_login = $_POST['auto-login'];
         if (!is_tinytext($email) || empty($email)) die("邮箱长度限制为1~255字符，你的邮箱长度为".strlen($email));
         if (!check_length($password, 6, 100)) die("请填写6-100位密码");
-        if ($auto_login == "true") User::set_auto_login_cookie($email, $password);
-        die(User::login($loader->info->conn, $email, $password, $error) ? "success" : "登录失败，".$error);
+        $success = User::login($loader->info->conn, $email, $password, $error);
+        if ($success && $auto_login == "true") User::set_auto_login_cookie($loader->info->conn, $email);
+        die($success ? "success" : "登录失败，".$error);
     }
     case "manage": {
         if (!User::logged() || empty($_SESSION['uid'])) die("你尚未登录");
