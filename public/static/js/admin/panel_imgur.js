@@ -20,6 +20,7 @@ function delete_img(md5, id) {
 }
 let imgs = $("#imgs");
 function get_imgs(page) {
+    curpage = page;
     $.ajax({
         url: "./api.php",
         type: 'POST',

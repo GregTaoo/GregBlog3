@@ -98,7 +98,7 @@ class Reply {
             $http = substr($lnk, 0, 7);
             $lnk = $http == "http://" || $http == "https:/" ? $lnk : "https://unpkg.com/gregblog-cdn/img/".$lnk;
             $ret .= $lnk;
-            $ret .= '" alt="emo" title="'.$res[1].'">';
+            $ret .= '" alt="['.$res[1].']" title="['.$res[1].']">';
             return $ret;
         }, $this->text);
     }
@@ -144,6 +144,13 @@ class Reply {
                 $user->nickname = $result[1];
                 $user->query("nickname");
                 if ($user->exist) {
+                    if ($this->sub) {
+                        $father = new Reply($this->conn);
+                        $father->in_blog = $this->in_blog;
+                        $father->floor = $this->floor;
+                        $father->query_by_floor();
+                        if ($father->owner == $user->uid) return $result[0];
+                    }
                     Message::add_at_message($this->conn, $this->owner, $user->uid, $this->in_blog, $this->text, $this->floor, $this->reply_id);
                 }
                 return $result[0];

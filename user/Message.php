@@ -83,10 +83,6 @@ class Message {
     {
         $blog = new Blog($conn, $in_blog, false);
         $blog->get_data();
-        $reply = new Reply($conn);
-        $reply->in_blog = $in_blog;
-        $reply->floor = $floor;
-        $reply->query_by_floor();
         if ($from == $to) return;
         $config = Info::config();
         $msg = self::of(

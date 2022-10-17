@@ -6,10 +6,10 @@ class SearchEngine {
 
     public static function search_blog(?mysqli $conn, $page, $orderby, $keyw): array
     {
-        $sql = "SELECT id FROM blogs 
-           WHERE visible = 1 AND ((title LIKE '%".$keyw."%') OR (tags LIKE '%".$keyw."%') OR (intro LIKE '%".$keyw."%'))
-           ORDER BY ".$orderby." LIMIT ".($page * 20).", 20";
         $list = array();
+        $sql = "SELECT id FROM blogs 
+           WHERE visible = 1 AND ((title LIKE '%".$keyw."%') OR (tags LIKE '%".$keyw."%') OR (intro LIKE '%".$keyw."%') OR (owner IN (SELECT uid FROM users WHERE nickname = '".$keyw."')))
+           ORDER BY ".$orderby." LIMIT ".($page * 20).", 20";
         $result = mysqli_query($conn, $sql);
         while ($arr = mysqli_fetch_array($result)) {
             $blog = new Blog($conn, $arr['id'], false);
@@ -33,7 +33,7 @@ class SearchEngine {
     public static function search_user(?mysqli $conn, $page, $keyw): array
     {
         $num = is_numeric($keyw);
-        $stmt = $conn->prepare("SELECT uid FROM users WHERE allow_be_srch = 1 AND nickname LIKE CONCAT('%', ?, '%')".($num ? " OR uid = ".$keyw : "")." LIMIT ?, 20");
+        $stmt = $conn->prepare("SELECT uid FROM users WHERE allow_be_srch = 1 AND nickname LIKE CONCAT('%', ?, '%')".($num ? " OR uid = ".$keyw : "")." ORDER BY uid DESC LIMIT ?, 20");
         $top = 20 * $page;
         $stmt->bind_param("si", $keyw, $top);
         $stmt->execute();

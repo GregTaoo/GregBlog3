@@ -4,6 +4,7 @@ let pgs = $("#page-selector");
 let hdrdiv = $("#header-div");
 let curpage = 0, pages = 0;
 function query(page) {
+    curpage = page;
     cttdiv.addClass("loading");
     $.ajax({
         url: "./api.php",

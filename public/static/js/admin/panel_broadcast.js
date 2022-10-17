@@ -62,6 +62,7 @@ function update_bc(id) {
 }
 let bcs = $("#bcs");
 function get_bcs(page) {
+    curpage = page;
     $.ajax({
         url: "./api.php",
         type: 'POST',

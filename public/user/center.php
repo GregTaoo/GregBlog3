@@ -66,6 +66,11 @@ $page = empty($_GET['page']) ? "main" : $_GET['page'];
                 <i class="user plus icon"></i>
                 管理员面板
             </a>
+            <?php } if (!$user->verified) {?>
+                <a href="./verify.php" class="ui orange button">
+                    <i class="user plus icon"></i>
+                    验证邮箱
+                </a>
             <?php } ?>
         </div>
         <div class="ui segment">

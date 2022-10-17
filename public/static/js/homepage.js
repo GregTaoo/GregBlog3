@@ -1,6 +1,7 @@
 let rcm = $("#recommend");
 let r_rcm = $("#refresh-recmd");
 let lgtb = $("#logo-tab");
+let latest = $("#latest-blogs");
 function recommend() {
     r_rcm.addClass("loading disabled");
     $.ajax({
@@ -54,6 +55,43 @@ function bc_obj_to_str(obj) {
         '<td>' + obj['update'] + '</td>' +
         '</tr>';
 }
+let latest_page = 0;
+function latest_blogs() {
+    $.ajax({
+        url: "/search/api.php",
+        type: 'GET',
+        data: {
+            "type": "blog",
+            "keyw": "%",
+            "orderby": "latest_edit_time",
+            "page": latest_page,
+            "desc": "true"
+        },
+        async: true,
+        success: function(data) {
+            let json = JSON.parse(data);
+            let list = json['list'];
+            for (let i = 0; i < list.length; ++i) {
+                let obj = list[i];
+                latest.append(
+                    '<tr><td><a href="/blog/show.php?id=' + obj['id'] + '">' + obj['title'] + '</a>' +
+                    ' | By <a href="/user/space.php?uid=' + obj['owner'] + '">'
+                    + obj['owner_nickname'] + '</a> | ' + obj['latest_edit_time'] + '</td></tr>');
+            }
+            if (parseInt(json['cnt']) < 20) {
+                latest.append('<tr><td style="background-color: #b4b4b4; text-align: center !important;">已无更多</td></tr>')
+            } else {
+                latest.append('<tr><td class="load-more" onclick="get_more()">加载更多</td></tr>')
+            }
+        }
+    });
+}
+function get_more() {
+    latest_page++;
+    $(".load-more").remove();
+    latest_blogs();
+}
 recommend();
+latest_blogs();
 get_bcs();
 lgtb.transition('scale');

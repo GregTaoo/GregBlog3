@@ -65,13 +65,14 @@ $links = Loader::get_postcard_links($config);
                     </div>
                 </div>
             </div>
-            <div class="six wide computer sixteen wide mobile column">
-                <div class="ui container">
+            <div class="six wide computer sixteen wide mobile column" style="display: flex; align-items: center;">
+                <div class="ui container" style="width: 100% !important;">
+                    <!--
                     <div class="ui shape" id="postcards">
                         <div class="sides">
                             <div class="active side">
-                                <?php if (!empty($links[0])) echo '<a href="'.$links[0].'">' ?>
-                                    <img src="<?php echo $postcards[0] ?>" class="homepage-postcard" alt="1">
+                                <?php /* if (!empty($links[0])) echo '<a href="'.$links[0].'">' ?>
+                                    <img src="//<?php echo $postcards[0] ?>" class="homepage-postcard" alt="1">
                                 <?php if (!empty($links[0])) echo '</a>' ?>
                             </div>
                             <?php
@@ -83,35 +84,47 @@ $links = Loader::get_postcard_links($config);
                                         <?php if (!empty($links[$i])) echo '</a>' ?>
                                     </div>
                                     <?php
-                                }
+                                } */
                             ?>
                         </div>
                     </div>
+                    -->
+                    <table class="ui very basic center aligned table">
+                        <tr class="column">
+                            <td id="hitokoto_text">:D Loading...</td>
+                            <script>
+                                var xhr = new XMLHttpRequest();
+                                xhr.open('get', 'https://v1.hitokoto.cn');
+                                xhr.onreadystatechange = function () {
+                                    if (xhr.readyState === 4) {
+                                        var data = JSON.parse(xhr.responseText);
+                                        var hitokoto = document.getElementById('hitokoto_text');
+                                        hitokoto.innerText = data.hitokoto + " —— " + data.creator;
+                                    }
+                                }
+                                xhr.send();
+                            </script>
+                        </tr>
+                        <tr class="column">
+                            <td id="jinrishici-sentence">:P Loading...</td>
+                            <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-    <table class="ui very basic center aligned table">
-        <tr class="column">
-            <td id="hitokoto_text">:D Loading...</td>
-            <script>
-                var xhr = new XMLHttpRequest();
-                xhr.open('get', 'https://v1.hitokoto.cn');
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4) {
-                        var data = JSON.parse(xhr.responseText);
-                        var hitokoto = document.getElementById('hitokoto_text');
-                        hitokoto.innerText = data.hitokoto + " —— " + data.creator;
-                    }
-                }
-                xhr.send();
-            </script>
-        </tr>
-        <tr class="column">
-            <td id="jinrishici-sentence">:P Loading...</td>
-            <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
-        </tr>
-    </table>
+    <div class="ui container" style="margin-top: 20px; ">
+        <table class="ui celled table">
+            <thead>
+            <tr>
+                <th>最近更新的博客</th>
+            </tr>
+            </thead>
+            <tbody id="latest-blogs">
+            </tbody>
+        </table>
+    </div>
 </div>
 <?php $loader->footer(); ?>
 </body>

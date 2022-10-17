@@ -129,7 +129,8 @@ $loader->init_end();
             <tbody id="imgs">
             <?php
             foreach ($img_list as $img) {
-                $link = get_url_prefix().$config['domain'].$config['imgur_file_path'].$img->id."_".$img->md5.'.'.$img->suffix;
+                $link_inside = $config['imgur_file_path'].$img->id."_".$img->md5.'.'.$img->suffix;
+                $link = get_url_prefix().$config['domain'].$link_inside;
                 ?>
                 <tr id="img<?php echo $img->id ?>">
                     <td>
@@ -137,7 +138,8 @@ $loader->init_end();
                     </td>
                     <td>
                         <span id="lnk-<?php echo $img->id ?>"><?php echo $link ?></span>
-                        <i class="copy icon copier" data-clipboard-target="#lnk-<?php echo $img->id ?>" data-content="复制成功"></i>
+                        <span style="display: none;" id="lnk-<?php echo $img->id ?>-inside"><?php echo $link_inside ?></span>
+                        <i class="copy icon copier" data-clipboard-target="#lnk-<?php echo $img->id ?>" onclick="try_insert_img_lnk(<?php echo $img->id ?>)" data-content="复制成功"></i>
                     </td>
                     <td><?php echo $img->upload_time ?></td>
                     <td><?php echo round($img->size / 1024, 2) ?> Kib</td>

@@ -32,3 +32,11 @@ html, body {
     background-color: #f8f8f8;
     width: 103%;
 }
+.load-more {
+    text-align: center !important;
+    background-color: #b4b4b4;
+}
+.load-more:hover {
+    background-color: #868686;
+    cursor: pointer;
+}

@@ -1,6 +1,7 @@
 let curpage = 0;
 let pages = 0;
 function get_blog_list(page) {
+    curpage = page;
     $.ajax({
         url: "./api.php",
         type: 'POST',

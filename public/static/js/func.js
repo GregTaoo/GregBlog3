@@ -138,8 +138,6 @@ function load_copier() {
 
     clipboard.on('success', function(e) {
         console.info('Text:', e.text);
-        let ipt = parent.document.getElementById('img-link');
-        if (ipt != null) ipt.value = e.text;
         e.clearSelection();
     });
 

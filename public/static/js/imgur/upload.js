@@ -155,3 +155,7 @@ function obj_to_str(obj) {
                 </td>\
             </tr>';
 }
+function try_insert_img_lnk(id) {
+    let ipt = parent.document.getElementById('img-link');
+    if (ipt != null) ipt.value = $("#lnk-" + id + "-inside").text();
+}
