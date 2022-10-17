@@ -1,6 +1,6 @@
 <?php
 class Info {
-    public static string $version = "3.3.0.0";
+    public static string $version = "3.3.1.0";
 
     public mysqli $conn;
 
