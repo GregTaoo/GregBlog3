@@ -29,7 +29,7 @@ create table broadcasts
     `update` tinytext             null,
     title    text                 null
 )
-    auto_increment = 1;
+    auto_increment = 0;
 
 create table collections
 (
@@ -52,7 +52,7 @@ create table forgetpw
     constraint forgetpw_id_uindex
         unique (id)
 )
-    auto_increment = 1;
+    auto_increment = 0;
 
 create table imgur
 (
@@ -65,7 +65,7 @@ create table imgur
     size        int      null,
     suffix      tinytext null
 )
-    auto_increment = 1;
+    auto_increment = 0;
 
 create table messages
 (
@@ -80,7 +80,15 @@ create table messages
     constraint messages_id_uindex
         unique (id)
 )
-    auto_increment = 1;
+    auto_increment = 0;
+
+create table rememberpw
+(
+    uid      int      not null,
+    keypw    tinytext null,
+    expires  int      null,
+    password tinytext null
+);
 
 create table replies
 (
@@ -95,7 +103,7 @@ create table replies
     reply_id  int auto_increment
         primary key
 )
-    auto_increment = 1;
+    auto_increment = 0;
 
 create table site
 (
@@ -120,4 +128,5 @@ create table users
     constraint users_uid_uindex
         unique (uid)
 )
-    auto_increment = 1;
+    auto_increment = 0;
+
