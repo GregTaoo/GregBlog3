@@ -130,3 +130,4 @@ create table users
 )
     auto_increment = 0;
 
+insert into site (blogs_sum) VALUES (0)
