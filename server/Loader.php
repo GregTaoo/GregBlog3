@@ -32,8 +32,8 @@ LABEL;
         echo '<link rel="icon" href="'.$config['icon_ico_path'].'">';
         if ($config['use_local_cdn'] == 1) {
             self::add_js(self::$local_cdn.'js/jquery/jquery.min.js');
-            self::add_css(self::$local_cdn.'js/semantic-ui/semantic.css');
-            self::add_js(self::$local_cdn.'js/semantic-ui/semantic.js');
+            self::add_css(self::$local_cdn.'js/semantic-ui/semantic.min.css');
+            self::add_js(self::$local_cdn.'js/semantic-ui/semantic.min.js');
             self::add_js(self::$local_cdn.'js/clipboard/clipboard.min.js');
         } else {
             self::add_js($config['jquery_js_src']);
