@@ -96,7 +96,7 @@ class Reply {
                 return $res[0];
             }
             $http = substr($lnk, 0, 7);
-            $lnk = $http == "http://" || $http == "https:/" ? $lnk : ($config['use_local_emotions'] == 1 ? "/static/cdn/img" : "https://unpkg.com/gregblog-cdn/img/").$lnk;
+            $lnk = $http == "http://" || $http == "https:/" ? $lnk : ($config['use_local_emotions'] == 1 ? "/static/cdn/img/" : "https://unpkg.com/gregblog-cdn/img/").$lnk;
             $ret .= $lnk;
             $ret .= '" alt="['.$res[1].']" title="['.$res[1].']">';
             return $ret;
