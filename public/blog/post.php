@@ -6,10 +6,17 @@ $config = Info::config();
 Loader::add_css("../static/css/menu.css");
 Loader::add_css("../static/css/blog.css");
 Loader::add_js("../static/js/blog/editor_func.js");
-Loader::add_js($config['codemirror_js_src']);
-Loader::add_css($config['codemirror_css_src']);
-Loader::add_js($config['codemirror_mode_js_src']);
-Loader::add_css($config['codemirror_theme_css_src']);
+if ($config['use_local_cdn'] == 1) {
+    Loader::add_js(Loader::$local_cdn.'js/codemirror/lib/codemirror.js');
+    Loader::add_css(Loader::$local_cdn.'js/codemirror/lib/codemirror.css');
+    Loader::add_js(Loader::$local_cdn.'js/codemirror/mode/markdown/markdown.js');
+    Loader::add_css(Loader::$local_cdn.'js/codemirror/theme/neat.css');
+} else {
+    Loader::add_js($config['codemirror_js_src']);
+    Loader::add_css($config['codemirror_css_src']);
+    Loader::add_js($config['codemirror_mode_js_src']);
+    Loader::add_css($config['codemirror_theme_css_src']);
+}
 $loader->init_end();
 $is_edit = !empty($_GET['is_edit']) && $_GET['is_edit'] == "1";
 $id = $is_edit ? (empty($_GET['id']) ? 0 : $_GET['id']) : 0;

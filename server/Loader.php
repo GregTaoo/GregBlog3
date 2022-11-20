@@ -3,6 +3,7 @@ class Loader {
     public Info $info;
     public string $id;
     public int $msgs = 0, $start_microtime = 0;
+    public static string $local_cdn = '/static/cdn/';
 
     public function __construct($id)
     {
@@ -29,12 +30,19 @@ class Loader {
 LABEL;
         echo '<link rel="shortcut icon" href="'.$config['icon_ico_path'].'">';
         echo '<link rel="icon" href="'.$config['icon_ico_path'].'">';
-        self::add_js($config['jquery_js_src']);
-        self::add_css($config['semantic_ui_css_src']);
-        self::add_js($config['semantic_ui_js_src']);
+        if ($config['use_local_cdn'] == 1) {
+            self::add_js(self::$local_cdn.'js/jquery/jquery.min.js');
+            self::add_css(self::$local_cdn.'js/semantic-ui/semantic.css');
+            self::add_js(self::$local_cdn.'js/semantic-ui/semantic.js');
+            self::add_js(self::$local_cdn.'js/clipboard/clipboard.min.js');
+        } else {
+            self::add_js($config['jquery_js_src']);
+            self::add_css($config['semantic_ui_css_src']);
+            self::add_js($config['semantic_ui_js_src']);
+            self::add_js($config['clipboard_js_src']);
+        }
         self::add_js("/static/js/func.js");
         self::add_css("/static/css/all.css");
-        self::add_js($config['clipboard_js_src']);
     }
 
     public function init_end()

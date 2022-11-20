@@ -9,12 +9,21 @@ $have_permsn = $blog->have_permission();
 $loader->init( $blog->exist ? (!$blog->visible && !$have_permsn ? "此博客不可见" : $blog->title." - ".$blog->owner->nickname."的帖子") : "博客不存在");
 Loader::add_css("../static/css/menu.css");
 Loader::add_css("../static/css/blog.css");
-Loader::add_css($config['katex_css_src']);
-Loader::add_js($config['katex_js_src']);
-Loader::add_js($config['katex_mhchem_ext_js_src']);
-Loader::add_js($config['katex_renderer_js_src']);
-Loader::add_js($config['highlight_js_src']);
-Loader::add_css($config['highlight_css_src']);
+if ($config['use_local_cdn'] == 1) {
+    Loader::add_css(Loader::$local_cdn.'js/katex/katex.min.css');
+    Loader::add_js(Loader::$local_cdn.'js/katex/katex.min.js');
+    Loader::add_js(Loader::$local_cdn.'js/katex/contrib/mhchem.min.js');
+    Loader::add_js(Loader::$local_cdn.'js/katex/contrib/auto-render.min.js');
+    Loader::add_js(Loader::$local_cdn.'js/highlight/highlight.min.js');
+    Loader::add_css(Loader::$local_cdn.'js/highlight/styles/atom-one-dark.min.css');
+} else {
+    Loader::add_css($config['katex_css_src']);
+    Loader::add_js($config['katex_js_src']);
+    Loader::add_js($config['katex_mhchem_ext_js_src']);
+    Loader::add_js($config['katex_renderer_js_src']);
+    Loader::add_js($config['highlight_js_src']);
+    Loader::add_css($config['highlight_css_src']);
+}
 ?>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
