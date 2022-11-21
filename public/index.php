@@ -13,7 +13,7 @@ $links = Loader::get_postcard_links($config);
 <div class="ui main container" style="margin-top: 64px">
     <div class="ui middle aligned two column centered grid" style="height: 300px; display: none" id="logo-tab">
         <div class="computer only five wide column">
-            <img alt="icon" src="favicon.png">
+            <img alt="icon" src="<?php echo $config['icon_path']; ?>">
         </div>
         <div class="eight wide computer fourteen wide mobile column">
             <h1>Freely speaking throughout the world!</h1>
