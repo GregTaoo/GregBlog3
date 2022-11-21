@@ -113,6 +113,7 @@ function upload() {
         }, 5000);
         $("#imgs").prepend(obj_to_str(obj['fb']));
         refresh_height();
+        load_copier();
     };
     xhr.onerror = function (e) {
         msg(e);
