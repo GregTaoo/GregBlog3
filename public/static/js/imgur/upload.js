@@ -144,7 +144,7 @@ function obj_to_str(obj) {
                 </td>\
                 <td>\
                     <span id="lnk-' + obj['id'] + '">' + obj['src'] + '</span>\
-                    <span style="display: none;" id="lnk-' + obj['id'] + '-inside">' + obj['src'] + '</span>\
+                    <span style="display: none;" id="lnk-' + obj['id'] + '-inside">' + obj['src_inside'] + '</span>\
                     <i class="copy icon copier" data-clipboard-target="#lnk-' + obj['id'] + '" onclick="try_insert_img_lnk(' + obj['id'] + ')" data-content="复制成功"></i>\
                 </td>\
                 <td>' + obj['time'] + '</td>\

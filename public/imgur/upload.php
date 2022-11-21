@@ -56,10 +56,12 @@ if ($step == 1) {
         $success = $imgur->upload();
         $error = $success ? get_success_msg("成功上传") : get_error_msg("上传失败");
     }
+    $src_inside = $config['imgur_file_path'].$imgur->id.'_'.$imgur->md5.'.'.$imgur->suffix;
     die(json_encode(array(
             'msg' => $error,
             'fb' => array(
-                    'src' => get_url_prefix().$config['domain'].$config['imgur_file_path'].$imgur->id.'_'.$imgur->md5.'.'.$imgur->suffix,
+                    'src_inside' => $src_inside,
+                    'src' => get_url_prefix().$config['domain'].$src_inside,
                     'time' => $imgur->upload_time,
                     'suffix' => $imgur->suffix,
                     'size' => $imgur->size,
