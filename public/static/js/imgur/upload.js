@@ -143,7 +143,7 @@ function obj_to_str(obj) {
                 </td>\
                 <td>\
                     <span id="lnk-' + obj['id'] + '">' + obj['src'] + '</span>\
-                    <i class="copy icon copier" data-clipboard-target="#lnk-' + obj['id'] + '" data-content="复制成功"></i>\
+                    <i class="copy icon copier" data-clipboard-target="#lnk-' + obj['id'] + '" onclick="try_insert_img_lnk(' + obj['id'] + ')" data-content="复制成功"></i>\
                 </td>\
                 <td>' + obj['time'] + '</td>\
                 <td>' + (obj['size'] / 1024).toFixed(2) + ' Kib</td>\
