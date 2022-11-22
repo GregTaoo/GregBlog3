@@ -1,6 +1,3 @@
-let tables = $("table");
-tables.addClass("ui celled table");
-tables.css("width", "100%");
 window.onscroll = function () {
     if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
         document.getElementById("rocket").style.display = "block";

@@ -62,6 +62,11 @@ if ($iframe) {
         </div>
     </div>
     </body>
+    <script>
+        let tables = $("table");
+        tables.addClass("ui celled table");
+        tables.css("width", "100%");
+    </script>
     <?php
     die;
 }
@@ -241,6 +246,9 @@ if (User::logged() && $id > 0) {
         let reply_id = <?php echo $reply_id ?>;
         let turn_to_subpage = <?php echo $sub_page ?>;
         let turn_to_floor = <?php echo $floor ?>;
+        let tables = $("table");
+        tables.addClass("ui celled table");
+        tables.css("width", "100%");
         <?php
             if ($newpage >= 0) echo 'curpage = '.$newpage.';';
             if ($sub_page >= 0) {
