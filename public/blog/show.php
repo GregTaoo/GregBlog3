@@ -56,14 +56,13 @@ if (!$blog->exist || (!$have_permsn && !$blog->visible)) {
 if ($iframe) {
     ?>
     <body>
-    <div class="ui main container" style="margin-top: 20px">
-        <div class="ui existing segment" style="word-break: break-word; font-size: medium" id="blog-main">
+    <div class="ui main container" style="margin-top: 10px">
+        <div style="word-break: break-word; font-size: medium; margin: 20px" id="blog-main">
             <?php echo $blog->get_parsed_text(); ?>
         </div>
     </div>
     </body>
     <?php
-    $loader->footer();
     die;
 }
 $replies_pages = (int)(($blog->replies_sum - 1) / 20);
