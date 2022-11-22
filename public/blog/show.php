@@ -24,6 +24,7 @@ if ($config['use_local_cdn'] == 1) {
     Loader::add_js($config['highlight_js_src']);
     Loader::add_css($config['highlight_css_src']);
 }
+$iframe = empty($_GET['iframe']) ? 0 : $_GET['iframe'];
 ?>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -41,10 +42,23 @@ $loader->init_end();
 if (!$blog->exist || (!$have_permsn && !$blog->visible)) {
     ?>
     <body>
-    <?php $loader->top_menu(); ?>
+    <?php if (!$iframe) $loader->top_menu(); ?>
     <div class="ui main container" style="margin-top: 64px">
         <div class="ui error message" id="error">
             <?php if (!$blog->exist) echo '此博客不存在'; else echo '此博客不可见'; ?>
+        </div>
+    </div>
+    </body>
+    <?php
+    $loader->footer();
+    die;
+}
+if ($iframe) {
+    ?>
+    <body>
+    <div class="ui main container" style="margin-top: 20px">
+        <div class="ui existing segment" style="word-break: break-word; font-size: medium" id="blog-main">
+            <?php echo $blog->get_parsed_text(); ?>
         </div>
     </div>
     </body>
