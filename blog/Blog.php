@@ -48,10 +48,11 @@ class Blog {
         $num = array();
         $info->get_site_data();
         if ($info->blogs_sum == 0) return array();
+        $maxid = $info->blogs_sum;
         for ($i = 1; $i <= min($amount, $info->blogs_sum); ++$i) {
             try {
                 do {
-                    $random = random_int(1, $info->blogs_sum);
+                    $random = random_int(1, $maxid);
                 } while (in_array($random, $num));
                 $blog = new Blog($info->conn, $random, false);
             } catch (Exception $e) {
@@ -59,6 +60,7 @@ class Blog {
             }
             $blog->get_data();
             if (!$blog->exist || !$blog->visible) {
+                if (!$blog->visible) $info->blogs_sum--;
                 $i--;
                 continue;
             }
