@@ -135,7 +135,7 @@ if (User::logged() && $id > 0) {
                                 <i class="icon smile outline"></i>表情
                             </div>
                             <div class="ui fluid popup" style="max-height: 300px; max-width: 350px; overflow-y: auto; overflow-x: hidden;">
-                                <table id="emotions-select" class="ui very basic collapsing celled table"></table>
+                                <table id="emotions-select-main" class="ui very basic collapsing celled table"></table>
                             </div>
                         </div>
                         <h3 class="ui header">评论区</h3>
