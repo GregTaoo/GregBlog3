@@ -292,7 +292,7 @@ function show_reply_form(floor, id, at = undefined) {
         '<i class="icon edit"></i>回复' +
         '</div>' +
         '<div class="ui teal labeled icon button emotion-toggle" style="float: right"><i class="icon smile outline"></i>表情</div>' +
-        '<div class="ui fluid popup" style="max-height: 300px; max-width: 350px; overflow-y: auto; overflow-x: hidden;">' +
+        '<div class="ui fluid popup" style="max-height: 300px; width: 350px; max-width: 80%; overflow-y: auto; overflow-x: hidden;">' +
         '<table id="emotions-select" class="ui very basic collapsing celled table"></table>' +
         '</div>' +
         '</form>'
