@@ -28,7 +28,7 @@ function get_emotions() {
             for (let emotion in obj) {
                 if (count === 0) emotions += "<tr>";
                 count++;
-                emotions += '<td><img title="' + emotion + '" alt="' + emotion + '" src="' + obj[emotion] + '" style="width: 80px;">';
+                emotions += '<td><img title="' + emotion + '" alt="' + emotion + '" src="' + obj[emotion] + '" style="width: 64px;">';
                 if (count === 5) {
                     emotions += "</tr>";
                     count = 0;
@@ -271,7 +271,7 @@ function show_reply_form(floor, id, at = undefined) {
         '<div class="ui primary submit labeled icon button" id="reply-button-' + floor + '" onclick="post_reply(' + floor + ', true)">' +
         '<i class="icon edit"></i>回复' +
         '</div>' +
-        '<div class="ui teal button copier" style="float: right">表情</div><div class="ui fluid popup"><table id="emotions-select" class="ui very basic collapsing celled table"></table></div>' +
+        '<div class="ui teal button copier" style="float: right">表情</div><div class="ui fluid popup" style="max-height: 300px; overflow-y: scroll"><table id="emotions-select" class="ui very basic collapsing celled table"></table></div>' +
         '</form>'
     );
     update_emotion_tables();
