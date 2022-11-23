@@ -43,7 +43,7 @@ function get_emotions() {
 }
 function update_emotion_tables() {
     $('#emotions-select').each(function () {
-        $(this).val(emotions);
+        $(this).html(emotions);
     });
 }
 function show_modal(modal) {
