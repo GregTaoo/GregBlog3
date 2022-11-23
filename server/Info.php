@@ -34,12 +34,16 @@ class Info {
         } catch (Exception $e) {
             return json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/../server/ConfigBackup.json'));
         }
-        /*
+    }
+
+    public static function emotions(): array
+    {
         try {
-            return require($_SERVER['DOCUMENT_ROOT'] . '/../server/Config.php');
+            $config = (array) json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/../config/Emotions.json'));
+            $backup = (array) json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/../server/EmotionsBackup.json'));
+            return array_merge($backup, $config);
         } catch (Exception $e) {
-            return require($_SERVER['DOCUMENT_ROOT'] . '/../server/ConfigBackup.php');
+            return json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/../server/EmotionsBackup.json'));
         }
-        */
     }
 }

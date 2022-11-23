@@ -151,6 +151,9 @@ if (!empty($_POST['type'])) {
             $info = new Info();
             die(json_encode(Broadcast::get_broadcasts_json($info->conn, 0, 5)));
         }
+        case "get-emotions-array": {
+            die(json_encode(Info::emotions()));
+        }
         default: {
             die("未知的操作");
         }

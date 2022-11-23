@@ -36,7 +36,10 @@ $page = empty($_GET['page']) ? "user" : $_GET['page'];
             公告
         </a>
         <a class="item <?php if ($page == "site") echo 'active' ?>" href="?page=site">
-            网站
+            网站设置
+        </a>
+        <a class="item <?php if ($page == "emotion") echo 'active' ?>" href="?page=emotion">
+            表情
         </a>
         <a class="item <?php if ($page == "mail") echo 'active' ?>" href="?page=mail">
             邮件
@@ -149,6 +152,24 @@ $page = empty($_GET['page']) ? "user" : $_GET['page'];
         <script src="../static/js/admin/panel_site.js">
         </script>
         <?php
+    }
+    else if ($page == "emotion") {
+        ?>
+        <div class="ui form">
+            <div class="field">
+                <div class="ui primary button" onclick="switch_mod()" id="switch"><i class="sync alternate icon"></i>切换模式</div>
+                <div class="ui green button" onclick="update_json()" id="submit"><i class="chevron circle up icon"></i>提交修改</div>
+                <div class="ui button" onclick="hide_msg(); get_json()" id="refresh"><i class="sync alternate icon"></i>刷新</div>
+            </div>
+            <div class="field" id="labels">
+            </div>
+            <div class="field">
+                <div class="ui red button" onclick="set_to_def()" id="s2def"><i class="undo icon"></i>重置为默认</div>
+            </div>
+        </div>
+        <script src="../static/js/admin/panel_emotion.js">
+        </script>
+    <?php
     }
     else if ($page == "blog") {
         ?>

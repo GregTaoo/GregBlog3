@@ -44,13 +44,5 @@
   "highlight_css_src": "https://unpkg.com/gregblog-cdn/js/highlight/styles/atom-one-dark.min.css",
   "clipboard_js_src": "https://unpkg.com/gregblog-cdn/js/clipboard/clipboard.min.js",
   "postcard_links": "/",
-  "use_local_emotions": 0,
-  "emotion_shaxiao": "shaxiao.jpg",
-  "emotion_oooo": "woooo.jpg",
-  "emotion_wuyu": "wuyu.jpg",
-  "emotion_shengqi": "angry.jpg",
-  "emotion_huaji": "huaji.gif",
-  "emotion_paimon": "paimon.png",
-  "emotion_wenhao": "wenhao.jpg",
-  "emotion_baishou": "baishou.jpg"
+  "use_local_emotions": 0
 }

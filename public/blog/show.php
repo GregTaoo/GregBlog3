@@ -107,6 +107,32 @@ if (User::logged() && $id > 0) {
                                 <a href=\"".get_url_prefix().$config['domain']."/user/space.php?uid=".$blog->latest_editor->uid."\">".$blog->latest_editor->nickname."</a>
                             "?><br>
                     <?php if (!$blog->visible) echo '此博客对无权限者不可见' ?>
+
+
+                    <div class="ui button">Show fluid popup</div>
+                    <div class="ui fluid popup">
+                        <table class="ui very basic collapsing celled table">
+                            <tbody>
+                                <tr>
+                                    <td>qwq</td>
+                                    <td>qwq</td>
+                                    <td>qwq</td>
+                                </tr>
+                                <tr>
+                                    <td>qwq</td>
+                                    <td>qwq</td>
+                                    <td>qwq</td>
+                                </tr>
+                                <tr>
+                                    <td>qwq</td>
+                                    <td>qwq</td>
+                                    <td>qwq</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
                 </div>
             </div>
             <div class="ui teal segment">

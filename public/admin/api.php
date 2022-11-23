@@ -71,21 +71,19 @@ switch ($manage) {
         $file = fopen($_SERVER['DOCUMENT_ROOT']."/../config/Config.json", "w") or die("文件打开失败");
         echo fwrite($file, $json_str) ? 'success' : 'failed';
         fclose($file);
-        /*
-        $str = "<?php\nreturn array(";
-        foreach ($json as $key => $obj) {
-            if (!is_numeric($obj)) {
-                $str = $str . "'" . $key . "'=>'" . str_replace("'", "\'", $obj) . "',";
-            } else {
-                $str = $str . "'" . $key . "'=>" . $obj . ",";
-            }
-        }
-        $str[strlen($str) - 1] = ')';
-        $str .= ';';
-        $file = fopen($_SERVER['DOCUMENT_ROOT']."/../server/Config.php", "w") or die("文件打开失败");
-        echo fwrite($file, $str) ? 'success' : 'failed';
+        die;
+    }
+    case "get-emotions-array": {
+        die(json_encode(Info::emotions()));
+    }
+    case "update-emotions-array": {
+        if (empty($_POST['json'])) die("字符串为空");
+        $json_str = $_POST['json'];
+        $json = json_decode($json_str);
+        if (json_last_error() != JSON_ERROR_NONE) die("json格式错误：".json_last_error_msg());
+        $file = fopen($_SERVER['DOCUMENT_ROOT']."/../config/Emotions.json", "w") or die("文件打开失败");
+        echo fwrite($file, $json_str) ? 'success' : 'failed';
         fclose($file);
-        */
         die;
     }
     case "get-blog-list": {
@@ -94,6 +92,9 @@ switch ($manage) {
     }
     case "get-config-backup": {
         die(json_encode(require($_SERVER['DOCUMENT_ROOT']."/../server/ConfigBackup.php")));
+    }
+    case "get-emotions-backup": {
+        die(json_encode(require($_SERVER['DOCUMENT_ROOT']."/../server/EmotionsBackup.php")));
     }
     case "email-test": {
         $email = $_POST['email'];
