@@ -61,6 +61,12 @@ blockquote {
 .emotion-block:hover {
     cursor: pointer;
 }
+.emotions-bar {
+    max-height: 300px;
+    max-width: 350px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
 
 @keyframes highlighter {
     0% {background-color: white}
@@ -79,5 +85,8 @@ blockquote {
 @media only screen and (max-width: 700px) {
     #blog-main img {
         max-width: 100%;
+    }
+    .emotions-bar {
+        max-width: 70%;
     }
 }
