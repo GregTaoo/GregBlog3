@@ -131,6 +131,12 @@ if (User::logged() && $id > 0) {
                                 <i class="icon edit"></i>
                                 添加评论
                             </div>
+                            <div class="ui teal labeled icon button emotion-toggle" style="float: right">
+                                <i class="icon smile outline"></i>表情
+                            </div>
+                            <div class="ui fluid popup" style="max-height: 300px; max-width: 350px; overflow-y: auto; overflow-x: hidden;">
+                                <table id="emotions-select" class="ui very basic collapsing celled table"></table>
+                            </div>
                         </div>
                         <h3 class="ui header">评论区</h3>
                         <div class="ui message" style="font-size: small">
@@ -152,7 +158,7 @@ if (User::logged() && $id > 0) {
                                 <i class="exclamation triangle icon"></i>
                             </div>
                             <div class="description">
-                                <h3>确认要删除此博客吗？请确认是否有尚未保存的内容。数据丢失本站一概不负责。</h3>
+                                <h3>确认要删除此博客吗？请确认是否有尚未保存的内容。</h3>
                             </div>
                         </div>
                         <div class="actions">

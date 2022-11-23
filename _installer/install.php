@@ -25,8 +25,7 @@ if ($step == 0) {
         <input type="submit" value="开始部署"><br>
     </form>
     <?php
-}
-else if ($step == 1) {
+} else if ($step == 1) {
     if ($jump != 1) {
         echo '请稍等片刻...<br>';
         try {
@@ -54,6 +53,7 @@ else if ($step == 1) {
         try {
             $config = (array) json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/../config/Config.json'));
             $conn = mysqli_connect($config['mysql_ip'], $config['mysql_username'], $config['mysql_password'], $config['mysql_database']);
+            if (!$conn) die("数据库连接失败");
             $f_sql = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/../_installer/create_database.sql');
             $sentences = explode(';', $f_sql);
             foreach ($sentences as $sentence) {

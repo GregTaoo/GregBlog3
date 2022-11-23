@@ -28,7 +28,7 @@ function get_emotions() {
             for (let emotion in obj) {
                 if (count === 0) emotions += "<tr>";
                 count++;
-                emotions += '<td onclick="input_emotion(\'[' + emotion + ']\')" class="emotion-block"><img title="[' + emotion + ']" alt="[' + emotion + ']" src="' + obj[emotion] + '" style="width: 64px;">';
+                emotions += '<td onclick="input_emotion(\'[' + emotion + ']\', \'sub\')" class="emotion-block"><img title="[' + emotion + ']" alt="[' + emotion + ']" src="' + obj[emotion] + '" style="width: 64px;">';
                 if (count === 5) {
                     emotions += "</tr>";
                     count = 0;
@@ -51,10 +51,13 @@ function update_emotion_tables() {
     $('#emotions-select').each(function () {
         $(this).html(emotions);
     });
+    $('#emotions-select-main').each(function () {
+        $(this).html(emotions.replace('\'sub\'', '\'main\''));
+    });
     load_toggles();
 }
-function input_emotion(text) {
-    let div = $("#reply-textarea-sub");
+function input_emotion(text, type) {
+    let div = $(type === 'main' ? "#reply-textarea" : "#reply-textarea-sub");
     let start = div[0].selectionStart;
     let end = div[0].selectionEnd;
     let val = div.val();
