@@ -43,7 +43,7 @@ function get_emotions() {
 }
 function update_emotion_tables() {
     $('.emotions-select').each(function () {
-        $(this).text(emotions);
+        $(this).val(emotions);
     });
 }
 function show_modal(modal) {
@@ -366,3 +366,10 @@ function recommend() {
 }
 get_emotions();
 recommend();
+function refresh() {
+    setTimeout(function () {
+        update_emotion_tables();
+        refresh();
+    }, 1000);
+}
+refresh();
