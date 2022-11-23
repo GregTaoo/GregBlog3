@@ -63,7 +63,7 @@ blockquote {
 }
 .emotion-bar {
     max-height: 300px;
-    max-width: 350px;
+    max-width: 350px !important;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -87,6 +87,6 @@ blockquote {
         max-width: 100%;
     }
     .emotion-bar {
-        max-width: 70%;
+        max-width: 70% !important;
     }
 }
