@@ -42,9 +42,9 @@ function get_emotions() {
     });
 }
 function update_emotion_tables() {
-    $('#emotions-select').each(
-        $(this).text(emotions)
-    );
+    $('.emotions-select').each(function () {
+        $(this).text(emotions);
+    });
 }
 function show_modal(modal) {
     $("#" + modal).modal("show");
@@ -270,7 +270,7 @@ function show_reply_form(floor, id, at = undefined) {
         '<div class="ui primary submit labeled icon button" id="reply-button-' + floor + '" onclick="post_reply(' + floor + ', true)">' +
         '<i class="icon edit"></i>回复' +
         '</div>' +
-        '<div class="ui button copier">表情</div><div class="ui fluid popup" id="emotions-select"></div>' +
+        '<div class="ui button copier">表情</div><div class="ui fluid popup emotions-select"></div>' +
         '</form>'
     );
 }
