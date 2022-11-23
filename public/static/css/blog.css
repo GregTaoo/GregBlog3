@@ -61,7 +61,7 @@ blockquote {
 .emotion-block:hover {
     cursor: pointer;
 }
-.emotions-bar {
+.emotion-bar {
     max-height: 300px;
     max-width: 350px;
     overflow-y: auto;
@@ -86,7 +86,7 @@ blockquote {
     #blog-main img {
         max-width: 100%;
     }
-    .emotions-bar {
+    .emotion-bar {
         max-width: 70%;
     }
 }
