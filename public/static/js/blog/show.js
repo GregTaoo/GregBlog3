@@ -43,6 +43,7 @@ function get_emotions() {
 }
 function load_toggles() {
     $('.emotion-toggle').popup({
+        position: 'left bottom',
         on: 'click'
     });
 }
