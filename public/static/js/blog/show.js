@@ -44,7 +44,7 @@ function get_emotions() {
 function load_toggles() {
     $('.emotion-toggle').popup({
         on: 'click',
-        position : 'bottom center'
+        position : 'bottom left'
     });
 }
 function update_emotion_tables() {
