@@ -157,6 +157,7 @@ if (!empty($_POST['type'])) {
                 $http = substr($lnk, 0, 7);
                 $lnk = $http == "http://" || $http == "https:/" ? $lnk : ($config['use_local_emotions'] == 1 ? "/static/cdn/img/" : "https://unpkg.com/gregblog-cdn/img/").$lnk;
             }
+            die(json_encode($array));
         }
         default: {
             die("未知的操作");
