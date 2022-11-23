@@ -44,7 +44,7 @@ function get_emotions() {
 function load_toggles() {
     $('.emotion-toggle').popup({
         on: 'click',
-        position : 'bottom center'
+        position : 'bottom left'
     });
 }
 function update_emotion_tables() {
@@ -52,7 +52,7 @@ function update_emotion_tables() {
         $(this).html(emotions);
     });
     $('#emotions-select-main').each(function () {
-        $(this).html(emotions.replace('\'sub\'', '\'main\''));
+        $(this).html(emotions.replace(/'sub'/, '\'main\''));
     });
     load_toggles();
 }
