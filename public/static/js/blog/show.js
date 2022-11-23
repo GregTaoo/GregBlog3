@@ -55,7 +55,10 @@ function update_emotion_tables() {
 }
 function input_emotion(text) {
     let div = $("#reply-textarea-sub");
-    div.val(div.val() + text);
+    let start = div[0].selectionStart;
+    let end = div[0].selectionEnd;
+    let val = div.val();
+    div.val(val.substring(0, start) + text + val.substring(end));
     $('.emotion-toggle').popup('hide');
     div.focus();
 }
@@ -291,7 +294,9 @@ function show_reply_form(floor, id, at = undefined) {
         '</form>'
     );
     update_emotion_tables();
-    $('#reply-textarea-sub').focus();
+    let textarea = $('#reply-textarea-sub');
+    let val = textarea.val();
+    textarea.val('').focus().val(val);
 }
 let btn = $("#clt-btn");
 function add_collect() {
