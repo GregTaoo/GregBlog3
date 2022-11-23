@@ -82,10 +82,13 @@ blockquote {
     100% {margin-bottom: 20px}
 }
 
-@media only screen and (max-width: 650px) {
+@media only screen and (max-width: 700px) {
     #blog-main img {
         max-width: 100%;
     }
+}
+
+@media only screen and (max-width: 1000px) {
     .emotion-bar {
         max-width: 70% !important;
     }
