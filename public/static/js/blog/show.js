@@ -11,6 +11,41 @@ let sub_pages = new Map();
 let rcm = $("#recommend");
 let side_bar = $("#side-bar");
 
+let emotions = "";
+
+function get_emotions() {
+    $.ajax({
+        url: "./api.php",
+        type: 'POST',
+        data: {
+            "type": "get-emotions-array"
+        },
+        async: true,
+        success: function(data) {
+            let obj = JSON.parse(data);
+            emotions = "";
+            let count = 0;
+            for (let emotion in obj) {
+                if (count === 0) emotions += "<tr>";
+                count++;
+                emotions += '<td><img title="' + emotion + '" alt="' + emotion + '" src="' + obj[emotion] + '">';
+                if (count === 5) {
+                    emotions += "</tr>";
+                    count = 0;
+                }
+            }
+            update_emotion_tables();
+        },
+        error:  function(XMLHttpRequest, textStatus, errorThrown) {
+            alert(XMLHttpRequest.responseText);
+        }
+    });
+}
+function update_emotion_tables() {
+    $('.emotions-select').each(
+        $(this).text(emotions)
+    );
+}
 function show_modal(modal) {
     $("#" + modal).modal("show");
 }
@@ -188,6 +223,7 @@ function parse_replies(data) {
     let selector = $("#reply-page-selector");
     selector.empty();
     selector.append(pages_selector(curpage, pages, (page, num) => '<a onclick="get_reply(' + page + ')" class="item">' + num + '</a>'), "");
+    update_emotion_tables();
 }
 function obj_to_str(obj, sub) {
     let user_href = '../user/space.php?uid=' + obj['owner'];
@@ -205,7 +241,7 @@ function obj_to_str(obj, sub) {
         obj['text'] +
         '</div>' +
         '<div class="actions" ' + (sub ? '' : 'id="reply-' + obj['floor'] + '"') + '>' +
-        '<a class="reply copier">表情</a><div class="ui fluid popup">  <div class="ui four column divided center aligned grid">    <div class="column">1</div>    <div class="column">2</div>    <div class="column">3</div>    <div class="column">4</div>  </div></div>' +
+        '<a class="reply copier">表情</a><div class="ui fluid popup" id="emotions-select"></div>' +
         (!sub ? '<a class="reply" onclick="show_reply_form(' + obj['floor'] + ', ' + obj['reply_id'] + ')">回复</a>' : '<a class="reply" onclick="show_reply_form(' + obj['floor'] + ', ' + obj['reply_id'] + ', \'' + obj['owner_nickname'] + '\')">回复</a>') +
         (admin || local_uid === obj['owner'] ? '<a class="reply" onclick="try_delete_reply(' + obj['floor'] + ',' + obj['sub'] + ',' + obj['sub_floor'] + ')">删除</a>' : '') +
         '</div>' +
@@ -328,4 +364,5 @@ function recommend() {
         }
     });
 }
+get_emotions();
 recommend();
