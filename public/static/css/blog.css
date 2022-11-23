@@ -58,8 +58,12 @@ blockquote {
     border-radius: 6px;
     padding: 4px;
 }
+.emotion-block {
+    transition-duration: 0.2s;
+}
 .emotion-block:hover {
     cursor: pointer;
+    background-color: #c9c9c9;
 }
 
 @keyframes highlighter {
