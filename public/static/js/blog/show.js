@@ -56,6 +56,7 @@ function update_emotion_tables() {
 function input_emotion(text) {
     let div = $("#reply-textarea-sub");
     div.val(div.val() + text);
+    $('.emotion-toggle').popup('hide');
 }
 function show_modal(modal) {
     $("#" + modal).modal("show");
