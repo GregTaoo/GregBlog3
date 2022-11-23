@@ -61,6 +61,7 @@ function input_emotion(text) {
     div.val(val.substring(0, start) + text + val.substring(end));
     $('.emotion-toggle').popup('hide');
     div.focus();
+    div[0].setSelectionRange(end, end);
 }
 function show_modal(modal) {
     $("#" + modal).modal("show");
