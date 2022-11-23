@@ -152,7 +152,11 @@ if (!empty($_POST['type'])) {
             die(json_encode(Broadcast::get_broadcasts_json($info->conn, 0, 5)));
         }
         case "get-emotions-array": {
-            die(json_encode(Info::emotions()));
+            $array = Info::emotions();
+            foreach ($array as $key=>&$lnk) {
+                $http = substr($lnk, 0, 7);
+                $lnk = $http == "http://" || $http == "https:/" ? $lnk : ($config['use_local_emotions'] == 1 ? "/static/cdn/img/" : "https://unpkg.com/gregblog-cdn/img/").$lnk;
+            }
         }
         default: {
             die("未知的操作");
