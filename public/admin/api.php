@@ -91,10 +91,10 @@ switch ($manage) {
         die(json_encode(Blog::get_admin_blog_json_list($loader->info->conn, $page)));
     }
     case "get-config-backup": {
-        die(json_encode(require($_SERVER['DOCUMENT_ROOT']."/../server/ConfigBackup.php")));
+        die(json_encode(file_get_contents($_SERVER['DOCUMENT_ROOT']."/../server/ConfigBackup.json")));
     }
     case "get-emotions-backup": {
-        die(json_encode(require($_SERVER['DOCUMENT_ROOT']."/../server/EmotionsBackup.php")));
+        die(json_encode(file_get_contents($_SERVER['DOCUMENT_ROOT']."/../server/EmotionsBackup.json")));
     }
     case "email-test": {
         $email = $_POST['email'];

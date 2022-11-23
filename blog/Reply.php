@@ -91,7 +91,8 @@ class Reply {
         $this->text = preg_replace_callback("/\[([a-zA-Z\d_-]*)]/", function ($res) {
             $ret = '<img style="max-width:128px" src="';
             $config = Info::config();
-            $lnk = $config['emotion_'.$res[1]];
+            $emotions = Info::emotions();
+            $lnk = $emotions[$res[1]];
             if (empty($lnk)) {
                 return $res[0];
             }
