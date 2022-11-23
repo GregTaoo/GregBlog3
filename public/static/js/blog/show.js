@@ -51,7 +51,7 @@ function update_emotion_tables() {
         $(this).html(emotions);
     });
     $('#emotions-select-main').each(function () {
-        $(this).html(emotions.replace(/'sub'/, '\'main\''));
+        $(this).html(emotions.replace(/'sub'/g, '\'main\''));
     });
     load_toggles();
 }
