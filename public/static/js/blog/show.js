@@ -205,7 +205,7 @@ function obj_to_str(obj, sub) {
         obj['text'] +
         '</div>' +
         '<div class="actions" ' + (sub ? '' : 'id="reply-' + obj['floor'] + '"') + '>' +
-        '<a class="reply copier">表情</a><div class="ui button">Show fluid popup</div><div class="ui fluid popup">  <div class="ui four column divided center aligned grid">    <div class="column">1</div>    <div class="column">2</div>    <div class="column">3</div>    <div class="column">4</div>  </div></div>' +
+        '<a class="reply copier">表情</a><div class="ui fluid popup">  <div class="ui four column divided center aligned grid">    <div class="column">1</div>    <div class="column">2</div>    <div class="column">3</div>    <div class="column">4</div>  </div></div>' +
         (!sub ? '<a class="reply" onclick="show_reply_form(' + obj['floor'] + ', ' + obj['reply_id'] + ')">回复</a>' : '<a class="reply" onclick="show_reply_form(' + obj['floor'] + ', ' + obj['reply_id'] + ', \'' + obj['owner_nickname'] + '\')">回复</a>') +
         (admin || local_uid === obj['owner'] ? '<a class="reply" onclick="try_delete_reply(' + obj['floor'] + ',' + obj['sub'] + ',' + obj['sub_floor'] + ')">删除</a>' : '') +
         '</div>' +
