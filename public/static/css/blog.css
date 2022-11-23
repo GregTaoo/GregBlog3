@@ -58,6 +58,9 @@ blockquote {
     border-radius: 6px;
     padding: 4px;
 }
+.emotion-block:hover {
+    cursor: pointer;
+}
 
 @keyframes highlighter {
     0% {background-color: white}

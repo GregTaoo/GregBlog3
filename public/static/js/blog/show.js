@@ -28,7 +28,7 @@ function get_emotions() {
             for (let emotion in obj) {
                 if (count === 0) emotions += "<tr>";
                 count++;
-                emotions += '<td><img title="[' + emotion + ']" onclick="input_emotion(\'[' + emotion + ']\')" alt="[' + emotion + ']" src="' + obj[emotion] + '" style="width: 64px;">';
+                emotions += '<td onclick="input_emotion(\'[' + emotion + ']\')" class="emotion-block"><img title="[' + emotion + ']" alt="[' + emotion + ']" src="' + obj[emotion] + '" style="width: 64px;">';
                 if (count === 5) {
                     emotions += "</tr>";
                     count = 0;
