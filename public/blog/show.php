@@ -131,7 +131,7 @@ if (User::logged() && $id > 0) {
                                 <i class="icon edit"></i>
                                 添加评论
                             </div>
-                            <div class="ui teal labeled icon button emotion-toggle" style="float: right">
+                            <div class="ui teal labeled icon button emotion-toggle" style="float: right; margin-top: 16px">
                                 <i class="icon smile outline"></i>表情
                             </div>
                             <div class="ui fluid popup" style="max-height: 300px; max-width: 350px; overflow-y: auto; overflow-x: hidden;">
