@@ -42,7 +42,7 @@ function get_emotions() {
     });
 }
 function update_emotion_tables() {
-    $('.emotions-select').each(
+    $('#emotions-select').each(
         $(this).text(emotions)
     );
 }
