@@ -241,7 +241,6 @@ function obj_to_str(obj, sub) {
         obj['text'] +
         '</div>' +
         '<div class="actions" ' + (sub ? '' : 'id="reply-' + obj['floor'] + '"') + '>' +
-        '<a class="reply copier">表情</a><div class="ui fluid popup" id="emotions-select"></div>' +
         (!sub ? '<a class="reply" onclick="show_reply_form(' + obj['floor'] + ', ' + obj['reply_id'] + ')">回复</a>' : '<a class="reply" onclick="show_reply_form(' + obj['floor'] + ', ' + obj['reply_id'] + ', \'' + obj['owner_nickname'] + '\')">回复</a>') +
         (admin || local_uid === obj['owner'] ? '<a class="reply" onclick="try_delete_reply(' + obj['floor'] + ',' + obj['sub'] + ',' + obj['sub_floor'] + ')">删除</a>' : '') +
         '</div>' +
@@ -271,6 +270,7 @@ function show_reply_form(floor, id, at = undefined) {
         '<div class="ui primary submit labeled icon button" id="reply-button-' + floor + '" onclick="post_reply(' + floor + ', true)">' +
         '<i class="icon edit"></i>回复' +
         '</div>' +
+        '<div class="ui button copier">表情</div><div class="ui fluid popup" id="emotions-select"></div>' +
         '</form>'
     );
 }
