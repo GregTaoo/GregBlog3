@@ -5,9 +5,7 @@ window.onscroll = function () {
         document.getElementById("rocket").style.display = "none";
     }
 }
-$('.emotion-toggle').popup({
-    position : 'bottom center'
-});
+
 let sub_pages = new Map();
 
 let rcm = $("#recommend");
@@ -43,11 +41,16 @@ function get_emotions() {
         }
     });
 }
+function load_toggles() {
+    $('.emotion-toggle').popup({
+        position : 'bottom center'
+    });
+}
 function update_emotion_tables() {
     $('#emotions-select').each(function () {
         $(this).html(emotions);
     });
-    load_copier();
+    load_toggles();
 }
 function input_emotion(text) {
     let div = $("#reply-textarea-sub");
