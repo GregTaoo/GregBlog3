@@ -88,20 +88,7 @@ class Reply {
 
     public function parse_emotions()
     {
-        $this->text = preg_replace_callback("/\[([\w\-\u{4e00}-\u{9fa5}]*)]/", function ($res) {
-            $ret = '<img style="max-width:128px" src="';
-            $config = Info::config();
-            $emotions = Info::emotions();
-            $lnk = $emotions[$res[1]];
-            if (empty($lnk)) {
-                return $res[0];
-            }
-            $http = substr($lnk, 0, 7);
-            $lnk = $http == "http://" || $http == "https:/" ? $lnk : ($config['use_local_emotions'] == 1 ? "/static/cdn/img/" : "https://unpkg.com/gregblog-cdn/img/").$lnk;
-            $ret .= $lnk;
-            $ret .= '" alt="['.$res[1].']" title="['.$res[1].']">';
-            return $ret;
-        }, $this->text);
+        $this->text = Blog::parse_emotions($this->text);
     }
 
     public function to_json_array(): array

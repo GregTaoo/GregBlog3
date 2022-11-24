@@ -115,12 +115,29 @@ class Blog {
         }
     }
 
+    public static function parse_emotions($raw): string
+    {
+        $config = Info::config();
+        $emotions = Info::emotions();
+        return preg_replace_callback("/\[([\w\-\u{4e00}-\u{9fa5}]*)]/", function ($res) use ($config, $emotions) {
+            $ret = '<img style="max-width:128px" src="';
+            $lnk = $emotions[$res[1]];
+            if (empty($lnk)) {
+                return $res[0];
+            }
+            $http = substr($lnk, 0, 7);
+            $lnk = $http == "http://" || $http == "https:/" ? $lnk : ($config['use_local_emotions'] == 1 ? "/static/cdn/img/" : "https://unpkg.com/gregblog-cdn/img/").$lnk;
+            $ret .= $lnk;
+            $ret .= '" alt="['.$res[1].']" title="['.$res[1].']">';
+            return $ret;
+        }, $raw);
+    }
+
     public function get_parsed_text(): string
     {
-        $text = $this->origin_text;
+        $text = self::parse_emotions($this->origin_text);
         $parsedown = new GregBlogParser();
-        $text = $parsedown->text(htmlspecialchars_decode($text));
-        return $text;
+        return $parsedown->text(htmlspecialchars_decode($text));
     }
 
     public function create_blog(): bool
