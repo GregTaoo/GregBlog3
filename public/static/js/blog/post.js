@@ -59,7 +59,7 @@ function get_emotions() {
 }
 function load_toggles() {
     $('.emotion-toggle').popup({
-        lastResort: 'bottom center',
+        lastResort: 'left center',
         on: 'click'
     });
 }
@@ -71,6 +71,7 @@ function update_emotion_tables() {
 }
 function input_emotion(text) {
     editor_add(text);
+    $('.emotion-toggle').popup('hide');
 }
 
 function show_error(error) {
