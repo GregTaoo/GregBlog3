@@ -28,6 +28,51 @@ let add_code = $("#add-code");
 let code_pkr = $('#code-picker');
 code_pkr.dropdown();
 
+let emotions = "";
+function get_emotions() {
+    $.ajax({
+        url: "/blog/api.php",
+        type: 'POST',
+        data: {
+            "type": "get-emotions-array"
+        },
+        async: true,
+        success: function(data) {
+            let obj = JSON.parse(data);
+            emotions = "";
+            let count = 0;
+            for (let emotion in obj) {
+                if (count === 0) emotions += "<tr>";
+                count++;
+                emotions += '<td onclick="input_emotion(\'[' + emotion + ']\')" class="emotion-block"><img title="[' + emotion + ']" alt="[' + emotion + ']" src="' + obj[emotion] + '" style="width: 64px;">';
+                if (count === 5) {
+                    emotions += "</tr>";
+                    count = 0;
+                }
+            }
+            update_emotion_tables();
+        },
+        error:  function(XMLHttpRequest, textStatus, errorThrown) {
+            alert(XMLHttpRequest.responseText);
+        }
+    });
+}
+function load_toggles() {
+    $('.emotion-toggle').popup({
+        lastResort: 'bottom center',
+        on: 'click'
+    });
+}
+function update_emotion_tables() {
+    $('#emotions-select-main').each(function () {
+        $(this).html(emotions);
+    });
+    load_toggles();
+}
+function input_emotion(text) {
+    editor_add(text);
+}
+
 function show_error(error) {
     $("#error").text(error).show();
 }

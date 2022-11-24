@@ -148,6 +148,11 @@ if (($is_edit && !$blog->have_permission()) || !$config['allow_post_blog']) {
                         <div class="ui teal basic button" onclick="editor_title(3)">H3</div>
                         <div class="ui teal basic button" onclick="editor_title(4)">H4</div>
                     </div>
+
+                    <div class="ui teal basic icon button emotion-toggle"><i class="smile outline icon"></i></div>
+                    <div class="ui fluid popup emotion-bar">
+                        <table id="emotions-select-main" class="ui very basic collapsing celled table"></table>
+                    </div>
                 </div>
                 <div class="field">
                     <textarea id="text"><?php if ($is_edit) echo $blog->origin_text ?></textarea>
