@@ -88,7 +88,7 @@ class Reply {
 
     public function parse_emotions()
     {
-        $this->text = preg_replace_callback("/\[([\u4e00-\u9fa5_a-zA-Z\d\-]*)]/", function ($res) {
+        $this->text = preg_replace_callback("/\[([\w\-]*)]/", function ($res) {
             $ret = '<img style="max-width:128px" src="';
             $config = Info::config();
             $emotions = Info::emotions();
