@@ -116,3 +116,4 @@ $(document).ready(function() {
         submit();
     });
 });
+get_emotions();
