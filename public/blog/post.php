@@ -149,7 +149,7 @@ if (($is_edit && !$blog->have_permission()) || !$config['allow_post_blog']) {
                         <div class="ui teal basic button" onclick="editor_title(4)">H4</div>
                     </div>
 
-                    <div class="ui teal basic icon button emotion-toggle"><i class="smile outline icon"></i></div>
+                    <div class="ui teal icon button emotion-toggle"><i class="smile outline icon"></i></div>
                     <div class="ui fluid popup emotion-bar">
                         <table id="emotions-select-main" class="ui very basic collapsing celled table"></table>
                     </div>

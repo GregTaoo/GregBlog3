@@ -59,7 +59,7 @@ function get_emotions() {
 }
 function load_toggles() {
     $('.emotion-toggle').popup({
-        lastResort: 'left center',
+        lastResort: 'right center',
         on: 'click'
     });
 }
