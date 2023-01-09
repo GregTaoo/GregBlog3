@@ -1,7 +1,7 @@
 <?php
 class Blog {
     public int $id, $replies_sum, $page_view = 0, $likes = 0;
-    public bool $exist = false, $get_text, $visible, $is_editor = false;
+    public bool $exist = false, $get_text, $visible = true, $is_editor = false;
     public User $owner, $latest_editor;
     public string $create_time, $latest_edit_time, $md;
     public string $origin_text, $title, $tags, $intro, $partition;
