@@ -111,7 +111,7 @@ LABEL;
                 </div>
                 <div class="eight wide column">
                     <a href="/static/page/credits.html">Credits</a><br>
-                    <a href="https://afdian.net/@gregtao">Donate</a>
+                    <a href="https://afdian.com/a/gregtao">Donate</a>
                 </div>
             </div>
         </div>
