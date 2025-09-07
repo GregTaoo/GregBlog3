@@ -199,14 +199,12 @@ class Blog {
 
     public function read_blog_file()
     {
-        /*
-        $path = $_SERVER['DOCUMENT_ROOT'] . Info::$blog_file_path . $this->md . ".md";
+        $config = Info::config();
+        $path = $_SERVER['DOCUMENT_ROOT'] . $config['blog_file_path'] . $this->md . ".md";
         $file = fopen($path, "r");
         $this->origin_text = fread($file, filesize($path));
         fclose($file);
-        */
-        $config = Info::config();
-        $this->origin_text = file_get_contents(get_url_prefix().$config['domain'].$config['blog_file_path'].$this->md.".md");
+        // $this->origin_text = file_get_contents(get_url_prefix().$config['domain'].$config['blog_file_path'].$this->md.".md");
     }
 
     public function execute_editors()

@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    container_name: gregblog-web
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    volumes:
+      - ./public/_blogs:/var/www/html/public/_blogs
+      - ./public/_imgur:/var/www/html/public/_imgur
+
+  db:
+    image: mariadb:10.9
+    container_name: gregblog-db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: gregdb
+      MYSQL_USER: greg
+      MYSQL_PASSWORD: secret
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./_installer/create_database.sql:/docker-entrypoint-initdb.d/create_database.sql:ro
+
+volumes:
+  db_data:

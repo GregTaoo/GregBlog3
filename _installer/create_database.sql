@@ -130,4 +130,6 @@ create table users
 )
     auto_increment = 0;
 
-insert into site (blogs_sum) VALUES (0)
+insert into site (blogs_sum) VALUES (0);
+insert into users (verified, email, nickname, password, regtime, admin, intro, title)
+       VALUES (1, 'admin@example.com', 'Admin', '$2y$10$DKqCxoI7wUv.iDEHyVI1beQoWDbKbyJQELxd9X9f6h5so5J7JLLHC', '2025-09-07 17:55:00', 1, '', '');

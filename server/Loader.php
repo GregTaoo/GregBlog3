@@ -9,6 +9,7 @@ class Loader {
     {
         $this->info = new Info();
         $this->id = $id;
+        ob_start();
         session_start();
     }
 
@@ -57,6 +58,7 @@ LABEL;
         echo <<<LABEL
         </html>
 LABEL;
+        ob_end_flush();
     }
 
     public function is_active($id): string
