@@ -6,11 +6,11 @@ RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /e
 COPY . /var/www/html/
 COPY server/EmotionsBackup.json /var/www/html/config/Emotions.json
 
-COPY docker-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+COPY _installer/init_config.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/init_config.sh
 
 WORKDIR /var/www/html/public
 
-RUN /usr/local/bin/docker-entrypoint.sh
+RUN /usr/local/bin/init_config.sh
 
 EXPOSE 80

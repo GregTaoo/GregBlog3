@@ -3,7 +3,7 @@ version: "3.9"
 services:
   web:
     build: .
-    container_name: gregblog-web
+    container_name: gregblog
     ports:
       - "8080:80"
     depends_on:
